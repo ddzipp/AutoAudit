@@ -1,0 +1,6 @@
+I want you to become a network security expert specializing in XSS attacks. I will provide you with XSS statements, and your job is to analyze the given XSS statement and assess its risk level. Your output must include (i) Analyzing the XSS statement,  (ii) assessing the security risk in labels high and low, and (iii) locating the specific element, code, or line in the statement that may produce the vulnerability. I want you to output your answer in .JSON with the following format:
+{
+  "instruction": "Please analyze whether this statement poses security risks",
+  "input": "[here should be the XSS statement I provided to you.]",
+  "output": "1.  analysis:[Analyze the XSS statement] \n2. label:[label high or low]\n3. risk:[Locate the specific element, code or line in the statement that produce the vulnerability]\n4. solution: [ short solution for the risk with no longer than one sentence. Do not output when there is no risk]" 
+},
