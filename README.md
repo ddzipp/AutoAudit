@@ -15,7 +15,7 @@ AutoAudit_LLM 数据集旨在为网络安全领域的研究人员、开发者和
 - 📣 2023/06/28：上传了批量处理SQL注入的脚本，使用了Openai API完成自动化任务。
 - 🛠️ 2023/06/27：开放 [Discussions 讨论区](https://github.com/ddzipp/AutoAudit_LLM_Dataset/discussions)，欢迎朋友们交流探讨、提出意见、分享观点！
 
-#### 数据集格式
+## 数据集格式
 
 由于我们使用的是[Alpaca-Lora](https://github.com/tloen/alpaca-lora)作为Base Model，并收集网络安全相关的知识形成对应语料进行训练，因此本数据集符合Alpaca-Lora规定的数据集格式；
 
@@ -23,9 +23,9 @@ AutoAudit_LLM 数据集旨在为网络安全领域的研究人员、开发者和
 
 ```json
 {
-		"instruction": "Does this statement have any potential XSS security risks?",
-		"input": "<noscript id=x tabindex=1 onfocusin=alert(1)></noscript>",
-		"output": "1. analysis: The provided XSS statement attempts to inject a script into the HTML page using the <noscript> tag. It sets the 'id' attribute to 'x', the 'tabindex' attribute to '1', and triggers the 'onfocusin' event to execute the 'alert(1)' JavaScript code. This code will display an alert dialog with the value '1'. \n2. risk: The risk associated with this statement is that it allows an attacker to inject arbitrary JavaScript code into the page and potentially manipulate its behavior or steal sensitive information from users. \n3. solution: To mitigate the XSS vulnerability, input validation and output encoding should be implemented. Any user input or untrusted data should be properly sanitized and validated before being rendered in HTML. Additionally, output encoding should be used when displaying dynamic content to ensure that any special characters are properly encoded and cannot be interpreted as code by the browser."
+	"instruction": "Does this statement have any potential XSS security risks?",
+	"input": "<noscript id=x tabindex=1 onfocusin=alert(1)></noscript>",
+	"output": "1. analysis: The provided XSS statement attempts to inject a script into the HTML page using the <noscript> tag. It sets the 'id' attribute to 'x', the 'tabindex' attribute to '1', and triggers the 'onfocusin' event to execute the 'alert(1)' JavaScript code. This code will display an alert dialog with the value '1'. \n2. risk: The risk associated with this statement is that it allows an attacker to inject arbitrary JavaScript code into the page and potentially manipulate its behavior or steal sensitive information from users. \n3. solution: To mitigate the XSS vulnerability, input validation and output encoding should be implemented. Any user input or untrusted data should be properly sanitized and validated before being rendered in HTML. Additionally, output encoding should be used when displaying dynamic content to ensure that any special characters are properly encoded and cannot be interpreted as code by the browser."
 }
 ```
 
