@@ -6,13 +6,27 @@
 
 ## 简介
 
-AutoAudit 数据集旨在为网络安全领域的研究人员、开发者和从业者提供一个标准化且多样化的语言样本和提示集合。该数据集涵盖了与网络安全相关的各种主题，包括漏洞评估、渗透测试、安全编码实践、入侵检测、网络协议、威胁分析等等。
+AutoAudit_LLM 数据集旨在为网络安全领域的研究人员、开发者和从业者提供一个标准化且多样化的语言样本和提示集合。该数据集涵盖了与网络安全相关的各种主题，包括漏洞评估、渗透测试、安全编码实践、入侵检测、网络协议、威胁分析等等。
 
-通过利用 AutoAudit 数据集，用户可以训练出能够在网络安全领域生成上下文准确的响应的先进语言模型。
+通过利用 AutoAudit_LLM 数据集，用户可以训练出能够在网络安全领域生成上下文准确的响应的先进语言模型。
+
+#### 数据集格式
+
+由于我们使用的是[Alpaca-Lora](https://github.com/tloen/alpaca-lora)作为Base Model，并收集网络安全相关的知识形成对应语料进行训练，因此本数据集符合Alpaca-Lora规定的数据集格式；
+
+下面将展示一个最为简单的实例：
+
+```json
+{
+		"instruction": "Does this statement have any potential XSS security risks?",
+		"input": "<noscript id=x tabindex=1 onfocusin=alert(1)></noscript>",
+		"output": "1. analysis: The provided XSS statement attempts to inject a script into the HTML page using the <noscript> tag. It sets the 'id' attribute to 'x', the 'tabindex' attribute to '1', and triggers the 'onfocusin' event to execute the 'alert(1)' JavaScript code. This code will display an alert dialog with the value '1'. \n2. risk: The risk associated with this statement is that it allows an attacker to inject arbitrary JavaScript code into the page and potentially manipulate its behavior or steal sensitive information from users. \n3. solution: To mitigate the XSS vulnerability, input validation and output encoding should be implemented. Any user input or untrusted data should be properly sanitized and validated before being rendered in HTML. Additionally, output encoding should be used when displaying dynamic content to ensure that any special characters are properly encoded and cannot be interpreted as code by the browser."
+}
+```
 
 ## 上传文件规范
 
-为了保持一致性和使用的便利性，我们请求贡献者在向 AutoAudit 数据集仓库上传文件时遵循以下规范：
+为了保持一致性和使用的便利性，我们请求贡献者在向 AutoAudit_LLM 数据集仓库上传文件时遵循以下规范：
 
 1. **文件格式：** 请以常用格式（如纯文本TXT、CSV或JSON）上传数据集以及Prompt文件，具体格式取决于数据集的结构和要求。（由于使用Alpaca模型，我们的数据集将以指定的JSON格式呈现）
 2. **命名规范：** 在命名文件时，请使用描述性和有意义的名称，以反映数据集的内容和目的。避免使用泛泛的或模糊的名称，以确保清晰易辨认。具体的文件结构将会在后续说明中给出。
@@ -36,7 +50,7 @@ AutoAudit 数据集旨在为网络安全领域的研究人员、开发者和从�
 
 ## :rainbow:贡献 AutoAudit_LLM数据集
 
-我们欢迎社区的贡献，丰富和扩展 AutoAudit 数据集。如果您希望做出贡献，请按照以下步骤进行：
+我们欢迎社区的贡献，丰富和扩展 AutoAudit_LLM 数据集。如果您希望做出贡献，请按照以下步骤进行：
 
 1. 将本仓库 Fork 到您自己的 GitHub 帐户中。
 2. 为您的更改创建一个新分支：`git checkout -b feature/new-dataset`。
@@ -49,7 +63,7 @@ AutoAudit 数据集旨在为网络安全领域的研究人员、开发者和从�
 
 ## :rotating_light:注意事项和免责声明
 
-1. **数据集内容：** 本仓库中的数据集（AutoAudit）可能包含网络安全漏洞和攻击的相关信息。请注意，这些数据仅用于研究和教育目的，并且在实际应用中可能会引起安全风险。
+1. **数据集内容：** 本仓库中的数据集（AutoAudit_LLM）可能包含网络安全漏洞和攻击的相关信息。请注意，这些数据仅用于研究和教育目的，并且在实际应用中可能会引起安全风险。
 2. **使用风险：** 使用本数据集所带来的任何风险和责任由使用者自行承担。我们强烈建议用户在合适的环境中使用数据集，并遵循适当的安全实践和法律法规。
 3. **数据验证：** 虽然我们尽力确保数据集的准确性和质量，但我们无法保证数据集中的所有信息都是完全准确和最新的。用户在使用数据集之前应该自行验证和审查数据的有效性和适用性。
 4. **合法合规：** 使用本数据集时，用户应确保其行为符合适用的法律法规，并遵守适用的隐私、数据保护和知识产权规定。我们不对用户使用数据集的违法或滥用行为承担任何责任。
@@ -61,7 +75,19 @@ AutoAudit 数据集旨在为网络安全领域的研究人员、开发者和从�
 
 ## 许可证
 
-AutoAudit 数据集采用 [LICENSE] 许可证发布。请查看许可证文件以获取有关数据集使用和分发的更多详细信息。
+AutoAudit_LLM 数据集采用 [LICENSE] 许可证发布。请查看许可证文件以获取有关数据集使用和分发的更多详细信息。
+
+## 参考链接
+
+本项目参考了多个Github项目或网络安全相关的网站以及数据集，链接如下：
+
+Alpaca-Lora：https://github.com/tloen/alpaca-lora
+
+Standford Alpaca: https://github.com/tatsu-lab/stanford_alpaca
+
+Self-instruct: https://github.com/yizhongw/self-instruct
+
+......(待更新)
 
 ## 联系方式
 
