@@ -20,7 +20,9 @@ def send_prompt(chrome,prompt):
 def send_msg(chrome,msg):
     # 获取输入框、发送按钮的xpath表达式
     textarea='//*[@id="prompt-textarea"]'
-    submit_button='//*[@id="__next"]/div[1]/div/div/main/div[3]/form/div/div[1]/button'
+    submit_button='/html/body/div[1]/div[1]/div[2]/div/main/div[3]/form/div/div[2]/button'
+    # //*[@id="__next"]/div[1]/div/div/main/div[3]/form/div/div[1]/button
+    # /html/body/div[1]/div[1]/div[2]/div/main/div[3]/form/div/div[2]/button
     # selenium自动获取输入框的内容，并发送
     chrome.find_element(By.XPATH,textarea).clear()
     chrome.find_element(By.XPATH,textarea).send_keys(msg)
