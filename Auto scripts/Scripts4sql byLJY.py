@@ -4,7 +4,7 @@ import json
 from openai import api_key, ChatCompletion
 
 # 设置OpenAI API Key
-openai.api_key = "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"
+openai.api_key = "xxxxxxxxx"
 openai.proxy = "http://127.0.0.1:7890"
 
 

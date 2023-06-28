@@ -2,7 +2,7 @@ import os
 import openai
 
 # 填入你的OPENAI_API_KEY
-openai.api_key = "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"
+openai.api_key = "xxxxx"
 
 # 代理设置：如果你在墙内需要使用代理才能调用，支持http代理和socks代理
 openai.proxy = "http://127.0.0.1:7890"
