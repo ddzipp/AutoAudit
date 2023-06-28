@@ -12,7 +12,8 @@ AutoAudit_LLM 数据集旨在为网络安全领域的研究人员、开发者和
 
 ## 更新
 
-- 📣 2023/06/28：上传了批量处理SQL注入的脚本，使用了Openai API完成自动化任务。
+- :couch_and_lamp: 2023/06/29：上传了批量处理SQL注入的脚本，使用了Openai API完成自动化任务。
+- 📣 2023/06/28：上传了有关SQL注入问答的QA泛化数据集
 - 🛠️ 2023/06/27：开放 [Discussions 讨论区](https://github.com/ddzipp/AutoAudit_LLM_Dataset/discussions)，欢迎朋友们交流探讨、提出意见、分享观点！
 
 ## 数据集格式
