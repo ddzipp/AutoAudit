@@ -1,9 +1,11 @@
+import os
 import re
 import json
 
 
 def remove_newlines(text):
-    return text.replace("\n", "")
+    text1 = text.replace("\n","")	
+    return text1.replace("\t", "")
 
 
 def find_xcodes(script):
@@ -14,17 +16,21 @@ def find_xcodes(script):
     cleaned_script = re.sub(pattern, '', script)
     # 查找除变量和函数之外的可执行语句段
     statements = re.findall(r'[^{};]+;', cleaned_script)
-    return '\n'.join(statements)
+    return ''.join(statements)
+
 
 def find_vars(script):
+    script = remove_newlines(script)
     variable_declarations = re.findall(r'var\s+([^;]+);', script)
-    return '\n'.join(variable_declarations)
+    return ';'.join(variable_declarations)
 
 
-def find_funcs(js_code):
-    function_declarations = re.findall(r'function\s+([\w$]+)\s*\([^)]*\)\s*{([^}]+)}', js_code,
+def find_funcs(script):
+    script = remove_newlines(script)
+    function_declarations = re.findall(r'function\s+([\w$]+)\s*\([^)]*\)\s*{([^}]+)}', script,
                                        re.MULTILINE | re.DOTALL)
-    return '\n'.join([f'function {name}() {{\n{body}\n}}' for name, body in function_declarations])
+    return '\n'.join([f'function {name}() {{{body}}}' for name, body in function_declarations])
+    #return '\n'.join(function_declarations)
 
 
 def find_scripts(text):
@@ -47,25 +53,28 @@ def count_funcs(script):
     return function_count
 
 
-def analyze_javascript(script):
+def analyze_javascript(script, checkhead=False):
     JSinfo = {
         "hasJS": False,
         "var_count": 0,
-        "func_count":0,
-        "vcodes":"",
-        "fcodes":"",
-        "xcodes":"",
+        "func_count": 0,
+        "vcodes": "",
+        "fcodes": "",
+        "xcodes": "",
     }
 
-    has_javascript = False
-    var_count, function_count = 0, 0
-    executable_statements = []
-
     # 检查文本中是否含有JavaScript脚本
-    if find_scripts(script):
-        #var_count = count_vars(script)
-        #function_count = count_funcs(script)
-        #executable_statements = find_xcodes(script)
+    if find_scripts(script) and checkhead == True:
+        # var_count = count_vars(script)
+        # function_count = count_funcs(script)
+        # executable_statements = find_xcodes(script)
+        JSinfo["hasJS"] = True
+        JSinfo["var_count"] = count_vars(script)
+        JSinfo["func_count"] = count_funcs(script)
+        JSinfo["vcodes"] = find_vars(script)
+        JSinfo["fcodes"] = find_funcs(script)
+        JSinfo["xcodes"] = find_xcodes(script)
+    elif checkhead == False:
         JSinfo["hasJS"] = True
         JSinfo["var_count"] = count_vars(script)
         JSinfo["func_count"] = count_funcs(script)
@@ -73,7 +82,9 @@ def analyze_javascript(script):
         JSinfo["fcodes"] = find_funcs(script)
         JSinfo["xcodes"] = find_xcodes(script)
 
-    return has_javascript, var_count, function_count, executable_statements
+    JS_json = json.dumps(JSinfo, indent=4)
+
+    return JS_json
 
 
 # 测试示例文本
@@ -96,15 +107,36 @@ var TKg = "oToJwK2t}n]h4Q}ht2zpssn4Q}ht2n}rxsq";
 "qbUjVwpugLsRhlwWhrcRgIBtMtfhMUZsxTolZasnBNLhXZTTNzJHSffdStvvelChgHGpIohbjkhOebtVWJTqdPRVcsYBwHTCLFXAVvDmqCdQYBcJvJozQvdTeHFzZRqBDJFuyTJNOeqhhYKmZcgmTvVNZyWAOmBnrGYKoldLBWjjaNxzpkyGZAfNjMWAglSvzNBOgjADHEHXTeLldEWDdkwhfiaHgBSKfRXTLSUunzapjXynClASQPjnOwdpJclHZdPUMlsGfbJscDGRevIAByWNWVceDJQFQDgstYKKVKnraTQoiLPpmHGafsArRFcfSXBAbzavy";
 var APE = "456HRoToJwK2pyr{ht55'anyhinr<]n}Tz'a";
 """
-has_js, var_count, function_count, exec_statements = analyze_javascript(text)
 
-print("JavaScript存在：" if has_js else "JavaScript不存在")
-print("变量数量：", var_count)
-print("函数数量：", function_count)
-vars = find_vars(script=text)
-print("可执行语句段：")
-for statement in exec_statements:
-    print(statement.strip())
+org_directory = "/home/erickali1920/桌面/alpaca/2017"
+target_path = "/home/erickali1920/桌面/alpaca/output.json"
+files = os.listdir(org_directory)
+list_json = []
+count = 0
+
+print("processing javascripts...")
+
+
+for root, dirs, files in os.walk(org_directory):
+    for file in files:
+        if file.endswith(".js"):  # 只处理 .js 文件
+            file_path = os.path.join(root, file)
+            with open(file_path, "r") as js_file:
+                content = js_file.read()
+                # 在这里进行对读取到的 .js 文件的操作
+                # 可以打印文件内容或者对其进行解析等
+                JS_json = analyze_javascript(content)
+                # print(JS_json)                
+                list_json.append(JS_json)
+                count = count + 1
+
+
+
+data_json = json.dumps(list_json,indent=4)
+with open(target_path,"w") as file:
+    file.write(data_json)
+    
+print("done with ", count)
 
 '''
 {
