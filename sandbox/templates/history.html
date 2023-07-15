@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <link rel="icon" href="/static/images/favicon.png"/>
+    <title>AutoAudit 历史扫描记录</title>
+    <style>
+        th, td {
+            text-align: center;
+            padding: 20px 0;
+            line-height: 20px;
+            border: 0.01px solid #ccc;
+            border-top: 1px solid #ccc; /* 保留水平边框 */
+            border-bottom: 1px solid #ccc; /* 保留水平边框 */
+            border-left: none; /* 去除竖线条 */
+            border-right: none; /* 去除竖线条 */
+        }
+
+        table thead tr {
+            background-color: #F2F4F7;
+            color: #fff;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background-color: #eee;
+        }
+
+        table tbody tr:hover {
+            background-color: #ccc;
+        }
+
+        table tbody tr td:first-child {
+            color: #f40;
+        }
+
+        table tfoot tr td {
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        table {
+            width: 1200px; /* 设置表格的宽度为1200像素 */
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg sticky-top navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="../static/images/autoaudit1.svg" alt="" width="124"/>
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            {% csrf_token %}
+            <form class="d-flex input-group w-auto" action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <input
+                        type="search"
+                        class="form-control rounded"
+                        placeholder="输入文件名进行查询"
+                        aria-label="Search"
+                        aria-describedby="search-addon"
+                        name="file_name"
+                />
+                <button class="btn btn-outline-secondary" type="submit">高级搜索</button>
+            </form>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'history' %}">History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'upload' %}">Analyzing</a>
+                </li>
+                <li class="nav-item">
+                    <a
+                            class="nav-link btn btn-outline-secondary px-4 mx-4"
+                            href="{% url 'chatbot' %}"
+                    >Chat With LLM</a
+                    >
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div style="text-align: center;padding-bottom: 3.5em;margin-bottom: 0;">
+    <p style="font-size: 1.5em;font-weight: bold;margin-top: 1.0em;margin-bottom: 0.5em;">AutoAudit最近提交的样本</p>
+    <table>
+        <thead>
+        <tr>
+            <th style="color:#666666">文件名称</th>
+            <th style="color:#666666">文件类型</th>
+            <th style="color:#666666">提交时间</th>
+            <th style="color:#666666">反病毒引擎检出</th>
+            <th style="color:#666666">判定</th>
+            <!-- 添加更多表头列 -->
+        </tr>
+        </thead>
+        <tbody>
+        {% for sample in samples %}
+            <tr>
+                <td style="color:#333333">
+                    <a href="{% url 'report'  sample.id %}">
+                        {{ sample.name }}
+                    </a>
+                </td>
+                <td style="color:#333333">
+                    {% if sample.type == 'text/plain' %}
+                        <span class="badge bg-primary">Plain</span>
+                    {% elif sample.type == 'text/html' %}
+                        <span class="badge bg-success">Html</span>
+                    {% elif sample.type == 'text/x-python' %}
+                        <span class="badge bg-danger">Python</span>
+                    {% elif sample.type == 'application/x-dosexec' %}
+                        <span class="badge bg-warning">EXE</span>
+                    {% elif sample.type == 'application/zip' %}
+                        <span class="badge bg-success">Office</span>
+                    {% elif sample.type == 'application/pdf' %}
+                        <span class="badge bg-warning">Pdf</span>
+                    {% else %}
+                        <span class="badge bg-danger">Other</span>
+                    {% endif %}
+                </td>
+                <td style="color:#333333">{{ sample.submission_date | date:'Y-m-d' }}</td>
+                <td style="color:#333333">
+                    {% if sample.detection_count == '1/2' or sample.detection_count == '2/2' %}
+                        <span style="color: red;">{{ sample.detection_count }}</span>
+                    {% else %}
+                        {{ sample.detection_count }}
+                    {% endif %}
+
+                </td>
+                <td>
+                    {% if sample.risk_level == 'low' %}
+                        <img style="vertical-align: middle" src="../static/images/threatLevelClean.svg">
+                    {% elif sample.risk_level == 'high' %}
+                        <img style="vertical-align: middle" src="../static/images/threatLevelMalicious.svg">
+                    {% endif %}
+                    <span style="color: {% if sample.risk_level == 'low' %}green{% elif sample.risk_level == 'high' %}red{% endif %}">
+                               {% if sample.risk_level == 'low' %}
+                                   安全
+                               {% elif sample.risk_level == 'high' %}
+                                   高危
+                               {% endif %}
+                            </span>
+                </td>
+                <!-- 添加更多表格单元格 -->
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<footer class="footer bg-light py-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 my-3">
+                <h6>About AutoAudit</h6>
+                <p>
+                    AutoAudit is a platform designed to provide a more diverse
+                    means of detecting security risks. This platform is developed by
+                    the team of SDU Software Cybersecurity Class.
+                </p>
+            </div>
+            <div class="col-md-4 my-3">
+                <h6>Links</h6>
+                <ul class="list-unstyled">
+                    <li>
+                        Important: <a href="#">Terms & Conditions</a>,
+                        <a href="#">Privacy Policy</a>
+                    </li>
+                    <li>
+                        Useful: <a href="#">Icon Library</a>,
+                        <a href="#">Illustrations</a>
+                    </li>
+                    <li>
+                        Menu: <a href="#">Home</a>, <a href="#">Details</a>,
+                        <a href="#">Services</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 my-3">
+                <div class="mb-4">
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-facebook fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-twitter fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-instagram fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-pinterest fa-3x text-dark mx-2"></i>
+                    </a>
+                </div>
+                <p>
+                    We would love to hear from you
+                    <a href="https://mail.google.com/"
+                    ><strong>G1282459418@Gmail.com</strong></a
+                    >
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="to-top" class="to-top-btn">
+    <img src="/static/images/up-arrow.png" alt=""/>
+</button>
+
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/script.js"></script>
+</body>
+</html>

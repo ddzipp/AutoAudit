@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <link rel="icon" href="/static/images/favicon.png"/>
+    <title>AutoAudit Chat对话</title>
+</head>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .sidebar {
+            flex-basis: 200px;
+            background-color: transparent;
+            padding: 20px;
+            position: sticky;
+            top: 80px; /* 距离页面顶部的距离 */
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .section {
+            margin: auto;
+            width: 1200px;
+            height: 400px;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right 0;
+        }
+
+        .section-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .section-subsubtitle {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        .sidebar a img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .image-box {
+            width: 200px;
+            height: 200px;
+            background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+        }
+
+        .image-box img {
+            width: 200px;
+            height: 200px;
+        }
+
+        .details-box {
+            margin-left: 20px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        .file-name {
+            display: block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .info-item {
+            margin-right: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+            font-size: 15px;
+            font-family: "微软雅黑", Arial, sans-serif;
+
+        }
+
+        .value {
+            margin-left: 5px;
+            font-size: 15px;
+            font-family: "微软雅黑", Arial, sans-serif;
+        }
+
+        .info-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .hash-info {
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sub-label {
+            font-weight: normal;
+            margin-right: 5px;
+            font-size: 15px;
+            font-family: "微软雅黑", Arial, sans-serif;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .gray-button {
+            background-color: #737070;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            color: white;
+            cursor: pointer;
+            transition: background-position 0.3s ease;
+            border-radius: 4px; /* 添加较小的圆角半径 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+        }
+
+        .gray-button:hover {
+            background-color: #5a5454; /* 鼠标悬停时的背景颜色 */
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
+        .file-info-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .file-info-table th, .file-info-table td {
+            border: 1px solid #cccccc;
+            padding: 12px;
+            width: 50%;
+        }
+
+        .file-info-table th {
+            background-color: #f2f2f2;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .light-gray-row {
+            background-color: #f9f9f9;
+        }
+
+        .light-white-row {
+            background-color: #f2f2f2;
+        }
+
+        .pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-family: 'Courier New', monospace;
+        }
+
+        pre {
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /*Opera 7 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+        }
+
+        .code {
+            font-family: 'Courier New', monospace;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            display: block;
+            padding: 10px;
+            color: #000;
+            text-decoration: none;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .dropdown-toggle:hover {
+            background-color: #ebebeb;
+        }
+
+        .dropdown-menu {
+            min-width: 0;
+            display: none;
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            left: 0;
+            z-index: 1;
+            margin-top: 5px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .underLine::before {
+            content: "";
+            display: block;
+            background: linear-gradient(to right, #b6b0b0, #ffffff);
+            width: 100%;
+            height: 1px;
+            margin-bottom: 10px;
+        }
+    </style>
+    
+<body>
+<nav class="navbar navbar-expand-lg sticky-top navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="../static/images/autoaudit1.svg" alt="" width="124"/>
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'history' %}">History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'upload' %}">Analyzing</a>
+                </li>
+                <li class="nav-item">
+                    <a
+                            class="nav-link btn btn-outline-secondary px-4 mx-4"
+                            href="#"
+                    >Chat With LLM</a
+                    >
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+        <div class="section" style="overflow-y: auto;overflow-x: auto;">
+            <!-- 文件分析内容 -->
+            {% for dict_engine2 in list_engine2 %}
+                <div class="underLine">
+                    <h3 class="section-subtitle" id="Report{{ forloop.counter }}">Report {{ forloop.counter }}</h3>
+                </div>
+                {% for key, value in dict_engine2.items %}
+                    <h4 class="section-subsubtitle" id="Report{{ forloop.parentloop.counter }}_{{ key }}">{{ key }}</h4>
+                    {% if forloop.counter == 1 %}
+                        <div class="pre">
+                            <div class="code">
+                                <pre><code>{{ value }}</code></pre>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>{{ value }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+<!-- Details 1 -->
+<section
+        id="details"
+        class="details position-relative my-6 overflow-hidden"
+>
+    <iframe src="http://127.0.0.1:{{count}}" height="1000px" width="100%"></iframe>
+</section>
+
+
+<footer class="footer bg-light py-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 my-3">
+                <h6>About AutoAudit</h6>
+                <p>
+                    AutoAudit is a platform designed to provide a more diverse
+                    means of detecting security risks. This platform is developed by
+                    the team of SDU Software Cybersecurity Class.
+                </p>
+            </div>
+            <div class="col-md-4 my-3">
+                <h6>Links</h6>
+                <ul class="list-unstyled">
+                    <li>
+                        Important: <a href="#">Terms & Conditions</a>,
+                        <a href="#">Privacy Policy</a>
+                    </li>
+                    <li>
+                        Useful: <a href="#">Icon Library</a>,
+                        <a href="#">Illustrations</a>
+                    </li>
+                    <li>
+                        Menu: <a href="#">Home</a>, <a href="#">Details</a>,
+                        <a href="#">Services</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 my-3">
+                <div class="mb-4">
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-facebook fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-twitter fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-instagram fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-pinterest fa-3x text-dark mx-2"></i>
+                    </a>
+                </div>
+                <p>
+                    We would love to hear from you
+                    <a href="https://mail.google.com/"
+                    ><strong>G1282459418@Gmail.com</strong></a
+                    >
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="to-top" class="to-top-btn">
+    <img src="/static/images/up-arrow.png" alt=""/>
+</button>
+
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/script.js"></script>
+</body>
+</html>

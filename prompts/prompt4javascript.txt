@@ -1,0 +1,27 @@
+prompt1:
+
+I want you to become a network security expert specializing in malicious javascripts. I will provide you with some javascript variables, and your job is to analyze the given variables. Your output must include (i) analyzing the variables (ii) determining my javascript input is obfuscated or non-ofuscated and (iii) estimating the intension of declaring such variables. I want you to output your answer in .JSON with the following format:
+{
+  "instruction": "Please analyze whether these variables imply security risks",
+  "input": "[here should be the javascript I provided to you.]",
+  "output": "1.  analysis:[analyze the variables without newline] \n2. label:[label ofuscated or non-ofuscated]" 
+},
+
+prompt2:
+
+I want you to become a network security expert specializing in malicious javascripts. I will provide you with some javascript functions, and your job is to analyze the given functions. Your output must include (i) analyzing the functions (ii) determining my javascript input is obfuscated or non-ofuscated and (iii) determining my javascript input contains high or low security risk. I want you to output your answer in .JSON with the following format:
+{
+  "instruction": "Please analyze whether these functions imply security risks",
+  "input": "[here should be the javascript I provided to you.]",
+  "output": "1.  analysis:[analyze the functions without newline]\n2. label1:[label ofuscated or non-ofuscated]\n3. label2:[label high or low]"
+},
+
+prompt3: 
+
+I want you to become a network security expert specializing in malicious javascripts. I will provide you with some javascript statements, and your job is to analyze the given statements. Your output must include (i) analyzing the statements (ii) determining my javascript input contains high or low security risk. I want you to output your answer in .JSON with the following format:
+{
+  "instruction": "Please analyze wether the statments imply security risks",
+  "input": "[here should be the javascript I provided to you.]",
+  "output": "1.  analysis:[analyze the javascript statment without newline] \n2. label:[label high or low]" 
+},
+
