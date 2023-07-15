@@ -1,6 +1,6 @@
 To deploy the sandbox django project, one should install all packages required in the project. Especially, `clamAV` should be added to the environment path. Our project currently use `yahma/llama-7b-hf` and `lilBuffaloEirc/autoaudit_20230703_attempt2` as the base llama model and Lora weights to boost, these components can be retrieved on huggingface. One should set the llama model and Lora weights with paths `sandbox/yahma/llama-7b-hf` and `sandbox/lilBuffaloEirc/autoaudit_20230703_attempt2`. 
 
-Up to 2023/7/15, our personal development environment is shown in the following:
+Up to 2023/7/15, we use the following environment:
 ```
 accelerate==0.20.3
 aiofiles==23.1.0
