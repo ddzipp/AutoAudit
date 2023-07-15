@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <link rel="icon" href="/static/images/favicon.png"/>
+    <title>AutoAudit 上传文件</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .upload-nav-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .upload-nav-item {
+            font-weight: bold;
+            padding: 8px 0;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            width: 400px;
+            text-align: center;
+        }
+
+        .upload-nav-item.active {
+            border-bottom-color: #3b48b3;
+        }
+
+        .form-upload-box {
+            border: 1px dashed #f9f9f9;
+            border-radius: 4px;
+            padding: 50px;
+            background-color: #f9f9f9;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            max-width: 800px;
+            height: 350px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .form-upload-box.active {
+            display: flex;
+            background-color: #ebebeb;
+            border-color: #c7c5c5;
+        }
+
+        .fileinp {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .upload {
+            width: 100px;
+            background-color: #4555d2;
+            border-radius: 5px;
+            text-align: center;
+            padding: 4px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .file-up {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 30px;
+            cursor: pointer;
+            opacity: 0;
+        }
+
+        .fileinp:hover .upload {
+            background: #3b48b3;
+        }
+
+        .textarea {
+            width: 770px;
+            height: 350px;
+            resize: none;
+            border: none;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background: #ebebeb;
+            outline: none;
+        }
+
+        .upb {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 5px;
+            padding: 10px 20px;
+            background-color: #3b48b3;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg sticky-top navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="/images/autoaudit1.svg" alt="" width="124"/>
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'history' %}">History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'upload' %}">Analyzing</a>
+                </li>
+                <li class="nav-item">
+                    <a
+                            class="nav-link btn btn-outline-secondary px-4 mx-4"
+                            href="#"
+                    >Chat With LLM</a
+                    >
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="row my-6">
+    <form class="upload-form">
+        <div class="upload-nav-bar">
+            <div class="upload-nav-item active" id="file-option">上传文件</div>
+            <div class="upload-nav-item" id="url-option">上传URL</div>
+        </div>
+        <div id="file-upload-box" class="form-upload-box active">
+            <img src="/static/images/file-upload-alt.svg" alt="File Upload Image"/>
+            <p style="text-align: center;">点击下方按钮进行文件上传，当前支持最大文件：50 MB<br>（支持多种Windows/Linux常见文件类型分析，涵盖可执行文件、脚本、DOC、PDF等）
+            </p>
+            <div class="fileinp">
+                <div class="upload">上传</div>
+                <input type="file" class="file-up" title="">
+            </div>
+        </div>
+
+        <div id="url-upload-box" class="form-upload-box">
+            <label>
+                <textarea class="textarea" placeholder="请在这里输入您的URL或其他语句"></textarea>
+            </label>
+            <button class="upb" id="btn1">上传</button>
+        </div>
+    </form>
+</div>
+
+
+<footer class="footer bg-light py-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 my-3">
+                <h6>About AutoAudit</h6>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Molestiae, possimus! Similique asperiores aliquid accusantium
+                    laudantium.
+                </p>
+            </div>
+            <div class="col-md-4 my-3">
+                <h6>Links</h6>
+                <ul class="list-unstyled">
+                    <li>
+                        Important: <a href="#">Terms & Conditions</a>,
+                        <a href="#">Privacy Policy</a>
+                    </li>
+                    <li>
+                        Useful: <a href="#">Icon Library</a>,
+                        <a href="#">Illustrations</a>
+                    </li>
+                    <li>
+                        Menu: <a href="#">Home</a>, <a href="#">Details</a>,
+                        <a href="#">Services</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 my-3">
+                <div class="mb-4">
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-facebook fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-twitter fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-instagram fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-pinterest fa-3x text-dark mx-2"></i>
+                    </a>
+                </div>
+                <p>
+                    We would love to hear from you
+                    <a href="https://mail.google.com/"
+                    ><strong>G1282459418@Gmail.com</strong></a
+                    >
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="to-top" class="to-top-btn">
+    <img src="/static/images/up-arrow.png" alt=""/>
+</button>
+
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/script.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#btn1').click(function () {
+            var content = $('textarea').val().trim();  // 获取 textarea 内容并去除首尾空格
+
+            if (content === '') {
+                alert('内容不能为空！');
+                return;
+            }
+
+            $.ajax({
+                url: '/upload/',  // 这里是你的 URL
+                type: 'POST',
+                data: {content: content},  // 发送给后端的数据
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        alert('上传成功！');
+                    } else {
+                        alert('上传失败：' + response.error);
+                    }
+                },
+                error: function () {
+                    alert('请求失败！');
+                }
+            });
+        });
+    });
+    const fileOption = document.getElementById('file-option');
+    const urlOption = document.getElementById('url-option');
+    const fileUploadBox = document.getElementById('file-upload-box');
+    const urlUploadBox = document.getElementById('url-upload-box');
+
+    fileOption.addEventListener('click', () => {
+        fileUploadBox.classList.add('active');
+        urlUploadBox.classList.remove('active');
+        fileOption.classList.add('active');
+        urlOption.classList.remove('active');
+    });
+
+    urlOption.addEventListener('click', () => {
+        urlUploadBox.classList.add('active');
+        fileUploadBox.classList.remove('active');
+        urlOption.classList.add('active');
+        fileOption.classList.remove('active');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <link rel="icon" href="/static/images/favicon.png"/>
+    <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <title>AutoAudit审计报告</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .sidebar {
+            flex-basis: 200px;
+            background-color: transparent;
+            padding: 20px;
+            position: sticky;
+            top: 80px; /* 距离页面顶部的距离 */
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            width: 680px;
+        }
+
+        .section-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .section-subsubtitle {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        .sidebar a img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .image-box {
+            width: 200px;
+            height: 200px;
+            background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+        }
+
+        .image-box img {
+            width: 200px;
+            height: 200px;
+        }
+
+        .details-box {
+            margin-left: 20px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        .file-name {
+            display: block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .info-item {
+            margin-right: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+            font-size: 15px;
+            font-family: "微软雅黑", Arial, sans-serif;
+
+        }
+
+        .value {
+            margin-left: 5px;
+            font-size: 15px;
+            font-family: "微软雅黑", Arial, sans-serif;
+        }
+
+        .info-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .hash-info {
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .sub-label {
+            font-weight: normal;
+            margin-right: 5px;
+            font-size: 15px;
+            font-family: "微软雅黑", Arial, sans-serif;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .gray-button {
+            background-color: #737070;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            color: white;
+            cursor: pointer;
+            transition: background-position 0.3s ease;
+            border-radius: 4px; /* 添加较小的圆角半径 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+        }
+
+        .gray-button:hover {
+            background-color: #5a5454; /* 鼠标悬停时的背景颜色 */
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
+        .file-info-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .file-info-table th, .file-info-table td {
+            border: 1px solid #cccccc;
+            padding: 12px;
+            width: 50%;
+        }
+
+        .file-info-table th {
+            background-color: #f2f2f2;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .light-gray-row {
+            background-color: #f9f9f9;
+        }
+
+        .light-white-row {
+            background-color: #f2f2f2;
+        }
+
+        .pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            font-family: 'Courier New', monospace;
+        }
+
+        pre {
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap; /* Mozilla, since1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /*Opera 7 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+        }
+
+        .code {
+            font-family: 'Courier New', monospace;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            display: block;
+            padding: 10px;
+            color: #000;
+            text-decoration: none;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .dropdown-toggle:hover {
+            background-color: #ebebeb;
+        }
+
+        .dropdown-menu {
+            min-width: 0;
+            display: none;
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            left: 0;
+            z-index: 1;
+            margin-top: 5px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .underLine::before {
+            content: "";
+            display: block;
+            background: linear-gradient(to right, #b6b0b0, #ffffff);
+            width: 100%;
+            height: 1px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg sticky-top navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="/static/images/autoaudit1.svg" alt="" width="124"/>
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'history' %}">History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'upload' %}">Analyzing</a>
+                </li>
+                <li class="nav-item">
+                    <a
+                            class="nav-link btn btn-outline-secondary px-4 mx-4"
+                            href="{% url 'chatbot' %}"
+                    >Chat with LLM</a
+                    >
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Header -->
+<header class="bg-light py-2">
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="image-box">
+                {% if th_label == 'low' %}
+                    <img src="/static/images/clean.svg" alt="SVG Image"/>
+                {% elif th_label == 'high' %}
+                    <img src="/static/images/malicious.svg" alt="SVG Image"/>
+                {% endif %}
+                <!-- Insert SVG image here -->
+                <!-- Example: <img src="your-image.svg" alt="SVG Image"> -->
+            </div>
+            <div class="details-box">
+                <div class="info-item">
+                    <span class="file-name">{{ fi_name }}</span>
+                </div>
+                <div class="info-row">
+                    <div class="info-item">
+                        <span class="label">文件首次提交时间:</span>
+                        <span class="value">{{ fs_date }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">末次提交时间:</span>
+                        <span class="value">{{ ls_date }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">末次分析时间:</span>
+                        <span class="value">{{ la_date }}</span>
+                    </div>
+                </div>
+                <div class="info-column">
+                    <div class="info-item">
+                        <span class="label">文件大小:</span>
+                        <span class="value">{{ fi_size }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">文件类型:</span>
+                        <span class="value">
+                             {% if fi_type == 'text/plain' %}
+                                 <span class="badge bg-primary">Plain</span>
+                             {% elif fi_type == 'text/html' %}
+                                 <span class="badge bg-success">Html</span>
+                             {% elif fi_type == 'text/x-python' %}
+                                 <span class="badge bg-danger">Python</span>
+                             {% elif fi_type == 'application/x-dosexec' %}
+                                 <span class="badge bg-warning">EXE</span>
+                             {% elif fi_type == 'application/zip' %}
+                                 <span class="badge bg-success">Office</span>
+                             {% elif fi_type == 'application/pdf' %}
+                                 <span class="badge bg-warning">Pdf</span>
+                             {% else %}
+                                 <span class="badge bg-danger">Other</span>
+                             {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="info-column">
+                    <div class="info-item">
+                        <span class="label">分析引擎:</span>
+                        <span class="value">
+                            {% if an_engine == '1/2' or an_engine == '2/2' %}
+                                <span style="color: red;">{{ an_engine }}</span>
+                            {% else %}
+                                {{ an_engine }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">威胁分类:</span>
+                        <span class="value">
+                            {% if th_label == 'high' %}
+                                <span class="badge bg-danger">文件高危</span>
+                            {% elif th_label == 'low' %}
+                                <span class="badge bg-success">文件安全</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="label">Hash:</span>
+                </div>
+                <ul class="hash-info">
+                    <li><span class="sub-label">SHA1:</span>{{ hs_sha1 }}</li>
+                    <li><span class="sub-label">SHA256:</span>{{ hs_sha256 }}</li>
+                    <li><span class="sub-label">MD5:</span>{{ hs_md5 }}</li>
+                </ul>
+                <div class="buttons">
+                    <button class="gray-button" onclick="window.print()">下载报告</button>
+                    <button class="gray-button" onclick="window.print()">打印PDF</button>
+                    <button class="gray-button" onclick="window.location.href = 'mailto:example@example.example';">
+                        反馈
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- sidebar -->
+<div class="container">
+    <div class="sidebar">
+        <ul>
+            <ul>
+                <li><a href="#engine1"><img src="/static/images/file_analyze1.svg" alt="文件信息图标">ClamAV</a></li>
+
+                <li class="dropdown">
+                    <a href="#engine2" class="dropdown-toggle"><img src="/static/images/file_analyze2.svg"
+                                                                    alt="文件分析图标">WatchDog</a>
+                    <ul class="dropdown-menu">
+                        {% for dict_engine2 in list_engine2 %}
+                            {% cycle 'file_analyze1.svg' 'file_analyze2.svg' 'file_analyze3.svg' 'file_analyze4.svg' as img silent %}
+                            <li><a href="#Report{{ forloop.counter }} "><img src="/static/images/{{ img }}"
+                                                                             width="100px;"/>Report {{ forloop.counter }}
+                            </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+    </div>
+
+    <div class="main-content custom-style">
+
+        <div class="section">
+            <h2 id="engine1">ClamAV <img src="/static/images/margin.svg" alt="分隔符"></h2>
+            <!-- 文件分析内容 -->
+            <table class="file-info-table">
+                {% for key, value in dict_engine1.items %}
+                    {% cycle 'light-gray-row' 'light-white-row' as row_class silent %}
+                    <tr class="{{ row_class }}">
+                        <td style="font-family: Arial,sans-serif;font-style: inherit;font-weight: bold"> {{ key }} </td>
+                        <td style="
+                                {% if key == 'virus type' %}{% if value == 'OK' %}color: #09cb09;{% else %}color: red;{% endif %}{% endif %}">{{ value }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <!-- p>[文件分析内容]</p -->
+            <!-- 其他文件分析模块 -->
+        </div>
+
+        <hr> <!-- 添加分割线 -->
+
+        <div class="section">
+            <h2 id="engine2">WatchDog <img src="/static/images/margin.svg" alt="分隔符"></h2>
+            <p>Current version: {{ engine2_version }}</p>
+            <!-- 文件分析内容 -->
+            {% for dict_engine2 in list_engine2 %}
+                <div class="underLine">
+                    <h3 class="section-subtitle" id="Report{{ forloop.counter }}">Report {{ forloop.counter }}</h3>
+                </div>
+                {% for key, value in dict_engine2.items %}
+                    <h4 class="section-subsubtitle" id="Report{{ forloop.parentloop.counter }}_{{ key }}">{{ key }}</h4>
+                    {% if forloop.counter == 1 %}
+                        <div class="pre">
+                            <div class="code">
+                                <pre><code>{{ value }}</code></pre>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>{{ value }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <hr> <!-- 添加分割线 -->
+
+    </div>
+</div>
+
+
+<!-- Cards -->
+<section class="my-4">
+    <div class="container">
+        <div class="row align-items-stretch">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <i class="fas fa-check text-secondary"></i> High Quality
+                            Service
+                        </h5>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
+                            culpa provident, aliquam officia expedita recusandae!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <i class="fas fa-check text-secondary"></i> Prompt Timely
+                            Service
+                        </h5>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </p>
+                        <li style="list-style-type: none; text-align: center">
+                            {% if file_id %}
+                                <a class="btn btn-outline-secondary" href="/chatbot/?file_id={{ file_id }}"
+                                   style="
+                                       display: flex;
+                                       margin-left: auto;
+                                       margin-right: auto;
+                                       align-items: center;
+                                       justify-content: center;
+                                       height: 50px;
+                                       width: 250px;
+                                       text-align: center;
+                                       font-size: 17px;
+                                   "
+                                >Chat again with LLM</a>
+                            {% else %}
+                                <a class="btn btn-outline-secondary" href="/chatbot/"
+                                   style="
+                                       display: flex;
+                                       margin-left: auto;
+                                       margin-right: auto;
+                                       align-items: center;
+                                       justify-content: center;
+                                       height: 50px;
+                                       width: 250px;
+                                       text-align: center;
+                                       font-size: 17px;
+                                   "
+                                >Chat again with LLM</a>
+                            {% endif %}
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <i class="fas fa-check text-secondary"></i> Skilled Team
+                            Involved
+                        </h5>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
+                            culpa provident, aliquam officia expedita recusandae!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer class="footer bg-light py-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 my-3">
+                <h6>About AutoAudit</h6>
+                <p>
+                    AutoAudit is a platform designed to provide a more diverse
+                    means of detecting security risks.
+                </p>
+            </div>
+            <div class="col-md-4 my-3">
+                <h6>Links</h6>
+                <ul class="list-unstyled">
+                    <li>
+                        Important: <a href="#">Terms & Conditions</a>,
+                        <a href="#">Privacy Policy</a>
+                    </li>
+                    <li>
+                        Useful: <a href="#">Icon Library</a>,
+                        <a href="#">Illustrations</a>
+                    </li>
+                    <li>
+                        Menu: <a href="#">Home</a>, <a href="#">Details</a>,
+                        <a href="#">Services</a>, <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4 my-3">
+                <div class="mb-4">
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-facebook fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-twitter fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-instagram fa-3x text-dark mx-2"></i>
+                    </a>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fab fa-pinterest fa-3x text-dark mx-2"></i>
+                    </a>
+                </div>
+                <p>
+                    We would love to hear from you
+                    <a href="mailto:contact@site.com"
+                    ><strong>contact@site.com</strong></a
+                    >
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="to-top" class="to-top-btn">
+    <img src="/static/images/up-arrow.png" alt=""/>
+</button>
+
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/script.js"></script>
+<script>
+    // 获取所有导航链接
+    const links = document.querySelectorAll('.sidebar a');
+
+    // 为每个导航链接添加点击事件
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            // 移除其他链接的 active 类名
+            links.forEach(otherLink => {
+                otherLink.classList.remove('active');
+            });
+
+            // 添加当前点击的链接的 active 类名
+            link.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>
