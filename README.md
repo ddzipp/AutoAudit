@@ -8,7 +8,7 @@
       <br/>
       <em>安全 / 审计 / 便捷 </em>
       <br/>
-      <a href="https://huggingface.co/JessyTsu1/ChatLaw-13B"><strong>HuggingFace</strong></a>
+      <a href="https://huggingface.co/lilBuffaloEric/autoaudit_20230703_attempt1"><strong>HuggingFace</strong></a>
     </p>
   </p>
 </div>
