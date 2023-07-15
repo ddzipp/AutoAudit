@@ -112,7 +112,7 @@ class AutoauditConfig(AppConfig):
             share_gradio = False,'''
             load_8bit = True;
             base_model = "yahma/llama-7b-hf";
-            lora_weights = "model_20230703_attempt2";
+            lora_weights = "lilBuffaloEric/autoaudit_20230703_attempt2";
             prompt_template = "";  # The prompt template to use, will default to alpaca.
             server_name = "0.0.0.0";  # Allows to listen on all interfaces by providing '0.
             share_gradio = False;
