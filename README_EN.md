@@ -1,26 +1,27 @@
 # AutoAudit-Cyber Security LLM model
 
-[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues)) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) |
+[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues)) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) 
 
-```html
 <div align="center">
   <a href="https://github.com/ddzipp/AutoAudit">
   <img src="https://github.com/ddzipp/AutoAudit/blob/main/images/logo.png" width="50%">
   </a>
   <p align="center">
       <br/>
-      <em>安全 / 审计 / 便捷 </em>
+      <em>Security / Audit / Convenience </em>
       <br/>
       <a href="https://huggingface.co/lilBuffaloEric/autoaudit_20230703_attempt1"><strong>HuggingFace</strong></a>
     </p>
   </p>
 </div>
-```
 
 # AutoAudit Series model
 
 - [AutoAudit-7B](), this version is a demo version trained based on [Alpaca-Lora](https://github.com/tloen/alpaca-lora). It performs admirably in the field of network security, yielding satisfactory responses in English. However, it currently lacks contextual understanding and requires a larger parameter model to address this limitation.
+
 - AutoAudit-33B, this version is still undergoing internal testing and training, and it will be released at a later date.
+
+  
 
 ## Brief Introduction
 
@@ -31,6 +32,8 @@ Coincidentally, we discovered that Microsoft has a similar offering, the "Micros
 To facilitate the application of large language models in the domain of network security, we have open-sourced the network security model "AutoAudit." Specifically designed for network security, AutoAudit aims to provide robust natural language processing capabilities for security auditing and network defense. Its functionalities include analyzing malicious code, detecting network attacks, and predicting security vulnerabilities, offering valuable support to security professionals.
 
 By introducing network security language models like AutoAudit, we can anticipate significant breakthroughs in the field of network security. It will serve as an indispensable aide to security professionals, furnishing accurate and rapid analysis and predictions to combat evolving cyber threats.
+
+
 
 ## Dataset
 
@@ -48,6 +51,8 @@ Currently, the composition ratio of our training dataset is as follows:
 
 ![dataset composition](https://github.com/ddzipp/AutoAudit/blob/main/images/dataset%20composition.png)
 
+
+
 ## System Schema
 
 ![result1](https://github.com/ddzipp/AutoAudit/blob/main/images/result1.png)
@@ -57,6 +62,8 @@ Currently, the composition ratio of our training dataset is as follows:
 ![result3](https://github.com/ddzipp/AutoAudit/blob/main/images/result3.png)
 
 ![result4](https://github.com/ddzipp/AutoAudit/blob/main/images/result4.png)
+
+
 
 ## Future Plans
 
