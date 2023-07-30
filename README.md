@@ -1,5 +1,7 @@
 # AutoAudit-网络安全大模型
 
+[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) |
+
 <div align="center">
   <a href="https://github.com/ddzipp/AutoAudit">
   <img src="https://github.com/ddzipp/AutoAudit/blob/main/images/logo.png" width="50%">
