@@ -1,6 +1,6 @@
 # AutoAudit-Cyber Security LLM model
 
-[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) 
+[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Wiki**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) 
 
 <div align="center">
   <a href="https://github.com/ddzipp/AutoAudit">
@@ -25,29 +25,79 @@
 
 ## Brief Introduction
 
-ChatGPT has ushered in a new era of large language model development, with major internet giants actively participating in this endeavor. Prominent universities are also intensifying their efforts in research and application of LLMs. In the realm of general large language models, OpenAI's dominance remains unshaken. Consequently, the trend towards specific-domain LLMs is inevitable. While models tailored for healthcare, education, finance, and law have gradually emerged, the domain of network security has thus far lacked such a model.
+ChatGPT has opened up a new direction in the development of large language models, with major internet giants entering the race. Prominent universities are also increasing their efforts in the research and application of LLMs. In the realm of general large language models, OpenAI's dominance remains unshaken. Thus, the development of large language models tailored for specific domains is an inevitable trend. While models have gradually emerged in fields like healthcare, education, finance, and law, the field of network security has been lacking in model releases.
 
-Coincidentally, we discovered that Microsoft has a similar offering, the "Microsoft Security Copilot." This suggests that incorporating natural language processing LLMs into the field of network security, even security auditing, is a viable path.
+Coincidentally, we've discovered that Microsoft also has a similar targeted product called "Microsoft Security Copilot." Perhaps introducing large language models for natural language processing into the realm of network security, even security auditing, is a feasible path.
 
-To facilitate the application of large language models in the domain of network security, we have open-sourced the network security model "AutoAudit." Specifically designed for network security, AutoAudit aims to provide robust natural language processing capabilities for security auditing and network defense. Its functionalities include analyzing malicious code, detecting network attacks, and predicting security vulnerabilities, offering valuable support to security professionals.
+To promote the application of large language models in the field of network security, this project has open-sourced the network security grand model "AutoAudit." Specifically designed for the network security domain, AutoAudit aims to provide robust natural language processing capabilities for security auditing and network defense. It has functionalities such as analyzing malicious code, detecting network attacks, and predicting security vulnerabilities, providing strong support for security professionals.
 
-By introducing network security language models like AutoAudit, we can anticipate significant breakthroughs in the field of network security. It will serve as an indispensable aide to security professionals, furnishing accurate and rapid analysis and predictions to combat evolving cyber threats.
+By introducing network security language models like AutoAudit, we can anticipate significant breakthroughs in the field of network security. It will become an invaluable assistant to security professionals, offering accurate and swift analysis and predictions to counter ever-evolving cyber threats.
+
+For interactive convenience and to address practical security auditing scenarios, we have coupled the AutoAudit model with ClamAV to create a security scanning platform (with the frontend inspired by Bootstrap templates). If you wish to directly download the AutoAudit model, you can visit [HuggingFace](https://huggingface.co/lilBuffaloEric/autoaudit_20230703_attempt1) to obtain the weights.
+
+
+
+## Model Deployment and Usage
+
+### Environment Setup
+
+1. Download the contents of this repository to your local or remote server:
+
+   ```
+   git clone git@github.com:ddzipp/AutoAudit.git
+   cd AutoAudit
+   ```
+
+2. Create a Conda environment:
+
+   ```
+   conda create --name AutoAudit python=3.8
+   conda activate AutoAudit
+   ```
+
+3. Install dependencies:
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Install ClamAV and add ClamAV to the environment path.
+
+5. Set the paths for the llama model and Lora weights in the sandbox:
+
+   ```
+   sandbox/yahma/llama-7b-hf 
+   sandbox/lilBuffaloEirc/autoaudit_20230703_attempt2
+   ```
+
+6. Run the following command to start the project:
+
+   ```
+   python manage.py runserver
+   ```
+
+
+
+## Future Plans
+
+1. **Enhancing Logical Reasoning in the Security Domain with Larger Model Bases**: In the field of network security, particularly in subdomains like malicious code analysis, SQL injection, and XSS analysis, there is a substantial demand for a higher number of input tokens. The current basic model's input is around 500-700 tokens, which is clearly inadequate for our needs. We are currently considering using ChatGLM or LLaMA2 as new foundational models.
+2. **Increased Accuracy and Reliability**: In the security domain, accuracy and reliability are paramount. Due to limitations in our team's resources and certain unique challenges, we currently can only use some automated scripts in the `scripts` directory for self-instruct, resulting in limited and time-consuming data samples that might lack professionalism and rigor. Our team faces many challenges in terms of improving and expanding the dataset, which we hope to receive assistance with.
+3. **Integration with More Security Scanning Tools** and coupling them with LLM to cover as many security scenarios as possible (we are considering automated vulnerability detection and binary reverse engineering).
+4. **Exploring Integration with Langchain**, allowing the LLM model to connect with external data sources.
 
 
 
 ## Dataset
 
-We have adopted the dataset organization method "Self-Instruct," which combines human annotation and self-generated data. The dataset is primarily sourced from Github, Kaggle, security websites, and publicly available security vulnerability datasets. Subsequently, it undergoes cleansing and data augmentation to construct dialogue data. Detailed information about the dataset, including its format and organization, can be found at [AutoAudit Training Data](https://github.com/ddzipp/AutoAudit/wiki/About-Dataset). Below is an example:
+We have adopted the Self-Instruct dataset organization method, which combines human annotation and self-generated data. The dataset is mainly sourced from Github, Kaggle, security websites, and publicly available security vulnerability datasets. Subsequently, it undergoes cleansing and data augmentation to construct dialogue data. The dataset is strictly organized in the Alpaca model dataset format, divided into three parts: Instruction, Input, and Output. In the output, we specify that the analysis should include detailed information (analysis), security rating (label), security risks (risk), and corresponding solutions (solution). For detailed dataset information (including format and organization), refer to [AutoAudit Training Data](https://github.com/ddzipp/AutoAudit/wiki/About-Dataset). Here are some examples:
 
-```json
-{
-	"instruction": "Does this statement have any potential XSS security risks?",
-	"input": "<noscript id=x tabindex=1 onfocusin=alert(1)></noscript>",
-	"output": "1. analysis: The provided XSS statement attempts to inject a script into the HTML page using the <noscript> tag. It sets the 'id' attribute to 'x', the 'tabindex' attribute to '1', and triggers the 'onfocusin' event to execute the 'alert(1)' JavaScript code. This code will display an alert dialog with the value '1'. \n2. risk: The risk associated with this statement is that it allows an attacker to inject arbitrary JavaScript code into the page and potentially manipulate its behavior or steal sensitive information from users. \n3. solution: To mitigate the XSS vulnerability, input validation and output encoding should be implemented. Any user input or untrusted data should be properly sanitized and validated before being rendered in HTML. Additionally, output encoding should be used when displaying dynamic content to ensure that any special characters are properly encoded and cannot be interpreted as code by the browser."
-}
-```
+| question                                                     | answer                                                       | Subject                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------- |
+| Please evaluate whether this statement carries any security vulnerabilities：" or pg_sleep ( TIME ) --" | **1. analysis**: The SQL statement appears to be attempting SQL injection by injecting a sleep command using the 'pg_sleep' function.\n**2. label**: high\n**3. risk**: The given SQL statement poses a high risk of SQL injection. It utilizes the 'pg_sleep' function to attempt a time-based blind SQL injection attack.\n**4. solution**: Implement proper input validation and parameterization to prevent SQL injection attacks. | SQL Analysis           |
+| Please analyze whether this Python code snippet poses security risks："import socket\nimport json\nimport os\nimport subprocess\nimport base64\n\nclass Backdoor:\n def **init**(self, ip, port):\n self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n self.connection.connect((ip, port))" | **1. analysis**: The Python code snippet defines a class named 'Backdoor' with an initializer method '**init**'. The class sets up a socket connection to a specified IP address and port.\n**2. label**: Low\n**3. risk**: The given Python code snippet has a low security risk. It mainly establishes a socket connection, which is a common networking operation. However, the actual security risk depends on the implementation details of the class and its usage.\n**4. solution**: Ensure that the 'Backdoor' class and its usage have appropriate security measures in place, such as proper input validation, secure communication protocols, access controls, and error handling, to mitigate potential security risks. | Python Code Analysis   |
+| What is the purpose of the Certificate Revocation List (CRL)? | The purpose of the Certificate Revocation List (CRL) is to list the digital certificates revoked by the issuing certificate authority (CA) before their scheduled expiration date, indicating that they should no longer be trusted. | Security Knowledge Q&A |
 
-Currently, the composition ratio of our training dataset is as follows:
+The current composition of the training dataset is as follows:
 
 ![dataset composition](https://github.com/ddzipp/AutoAudit/blob/main/images/dataset%20composition.png)
 
@@ -65,11 +115,3 @@ Currently, the composition ratio of our training dataset is as follows:
 
 
 
-## Future Plans
-
-1. **Enhanced Logical Reasoning in the Security Domain**: We are committed to boosting AutoAudit's logical reasoning capabilities in the realm of security. By intensifying model training and optimization, we aim to enhance its understanding and response to complex security scenarios. This will empower AutoAudit to handle tasks such as security incidents, threat analysis, and vulnerability prediction more effectively, providing security professionals with more precise solutions.
-2. **Improved Accuracy and Credibility**: In the field of security, accuracy and credibility are of paramount importance. We will continuously optimize AutoAudit's responses to ensure that its recommendations and guidance for security auditing and defense adhere to industry standards and best practices. Through collaboration with professional security institutions and experts, we will continuously update the model with regulations, security standards, and threat intelligence to deliver more accurate and credible results.
-3. **Extensive Exploration of Private Data Models**: We will actively explore customized demands based on private data models. Understanding the specific requirements of enterprises and organizations in the security domain, we will ensure data privacy and security, complying with relevant laws and regulatory requirements.
-4. **Continuous Research and Technological Innovation**: Collaborating with experts, academic institutions, and the security community, we will engage in in-depth research and technological innovation. By continually exploring cutting-edge technologies and methodologies, we will enhance AutoAudit's performance and functionality, ensuring it remains at the forefront of the security domain.
-
-Through these future improvement plans, we aspire to elevate AutoAudit's capabilities and value as a large language model in the domain of security. It will provide security professionals with more precise and reliable security auditing solutions. Moreover, we welcome in-depth discussions and collaborations with you to meet your customized requirements in the field of security.

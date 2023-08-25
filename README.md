@@ -4,7 +4,7 @@
 
 # AutoAudit-网络安全大模型
 
-[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Docs**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) 
+[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Wiki**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) 
 
 <div align="center">
   <a href="https://github.com/ddzipp/AutoAudit">
@@ -51,6 +51,47 @@ ChatGPT开启了大语言模型发展的新方向，各大互联网巨头纷纷�
 通过引入AutoAudit这样的网络安全语言模型，我们可以期待在网络安全领域取得更大的突破。它将成为安全专业人员的得力助手，提供准确、快速的分析和预测，帮助应对不断演进的网络威胁。
 
 为了便于交互，应对实际的安全审核应用场景，我们将AutoAudit模型与ClamAV进行耦合，搭建了一个安全扫描的平台（前端参考了Bootstrap所提供的模板）。如果您想直接下载AutoAudit模型，请访问[HuggingFace](https://huggingface.co/lilBuffaloEric/autoaudit_20230703_attempt1)直接获取权重。
+
+
+
+## 模型部署Usage
+
+### 环境安装
+
+1.下载本仓库内容至本地/远程服务器
+
+```
+git clone git@github.com:ddzipp/AutoAudit.git
+cd AutoAudit
+```
+
+2.创建conda环境
+
+```
+conda create --name AutoAudit python=3.8
+conda activate AutoAudit
+```
+
+3.安装依赖
+
+```
+pip install -r requirements.txt
+```
+
+4.安装ClamAV，并将 clamAV 添加到环境路径中。
+
+5.设置权重路径：我们的项目目前使用 yahma/llama-7b-hf 和 lilBuffaloEirc/autoaudit_20230703_attempt2 作为基本的 llama 模型和 Lora 权重进行增强，这些权重可以从 Hugging Face 上获取。您需要在sandbox中设置 llama 模型和 Lora 权重的路径为：
+
+```
+sandbox/yahma/llama-7b-hf 
+sandbox/lilBuffaloEirc/autoaudit_20230703_attempt2
+```
+
+5.输入下述指令启动项目：
+
+```
+python manage.py runserver
+```
 
 
 
