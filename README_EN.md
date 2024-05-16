@@ -101,7 +101,9 @@ The current composition of the training dataset is as follows:
 
 ![dataset composition](https://github.com/ddzipp/AutoAudit/blob/main/images/dataset%20composition.png)
 
+To simplify the process of automated dataset generation, we have also updated the [GPT](https://chatgpt.com/g/g-c9tvJtq1z-cybersecurity-dataset-for-llama) in the GPT Store dedicated to generating cybersecurity QA datasets, and the generation results are as follows:
 
+![GPT Store](https://github.com/ddzipp/AutoAudit/blob/main/images/GPT%20store.png)
 
 ## System Schema
 

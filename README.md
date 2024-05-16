@@ -122,7 +122,9 @@ python manage.py runserver
 
 ![dataset composition](https://github.com/ddzipp/AutoAudit/blob/main/images/dataset%20composition.png)
 
+为简化自动化数据集生成过程，我们也在GPT Store更新了专用于生成以LLaMA(Alpaca)为Base model的网络安全QA数据集的[GPT](https://chatgpt.com/g/g-c9tvJtq1z-cybersecurity-dataset-for-llama)，生成效果如下：
 
+![GPT Store](https://github.com/ddzipp/AutoAudit/blob/main/images/GPT%20store.png)
 
 ## 系统示意 Schema
 
