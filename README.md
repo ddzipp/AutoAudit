@@ -107,7 +107,7 @@ We have adopted the Self-Instruct dataset organization method, which combines hu
 
 The composition of the dataset used for training the current model and their corresponding proportions are as follows:
 
-![dataset composition](https://github.com/ddzipp/AutoAudit/blob/main/images/dataset%20composition.png)
+![dataset composition](https://github.com/ddzipp/AutoAudit/blob/main/images/dataset.png)
 
 To simplify the process of automated dataset generation, we have also updated the [GPT](https://chatgpt.com/g/g-c9tvJtq1z-cybersecurity-dataset-for-llama) in the GPT Store dedicated to generating cybersecurity QA datasets, and the generation results are as follows:
 
