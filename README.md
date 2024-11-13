@@ -39,7 +39,7 @@
 
 - AutoAudit-Qwen, due to the limited availability of Chinese cybersecurity corpus, this model is still in the exploration and planning stage.
 
-- More LLM are coming soon
+- More LLMs are coming soon
 
   
 
@@ -125,4 +125,4 @@ To simplify the process of automated dataset generation, we have also updated th
 
 ## Acknowledge
 
-I would like to thank my friend Eric Ma; working together with him to continuously improve this project has been one of the most meaningful experiences. I also want to express my gratitude to CUHKSZ He Lab, where I have learned so much and solidified my direction for further improvements. Finally, I extend my thanks to every member of the open-source community. Thank you for your support and help. I will try my best to develop my project, I hope you can like it.
+I would like to thank my friend [Eric Ma](https://github.com/lilBuffaloEric); working together with him to continuously improve this project has been one of the most meaningful experiences. I also want to express my gratitude to CUHKSZ He Lab, where I have learned so much and solidified my direction for further improvements. Finally, I extend my thanks to every member of the open-source community. Thank you for your support and help. I will try my best to develop my project, I hope you can like it.
