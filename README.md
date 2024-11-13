@@ -33,7 +33,7 @@
 
 # AutoAudit Series Model
 
-- [AutoAudit-7B](), this version is a demo version trained based on [Alpaca-Lora](https://github.com/tloen/alpaca-lora). It performs admirably in the field of network security, yielding satisfactory responses in English. However, it currently lacks contextual understanding and requires a larger parameter model to address this limitation.
+- [AutoAudit-7B](https://huggingface.co/lilBuffaloEric/autoaudit_20230714_attempt2), this version is a demo version trained based on [Alpaca-Lora](https://github.com/tloen/alpaca-lora). It performs admirably in the field of network security, yielding satisfactory responses in English. However, it currently lacks contextual understanding and requires a larger parameter model to address this limitation.
 
 - [AutoAudit-8B-Instruct](https://huggingface.co/dzip/Llama3_8B_4Cybersecurity), this version is fine-tuned based on [Llama3-8B-instruct](https://github.com/meta-llama/llama3), and its performance in answering cybersecurity-related queries has significantly improved. The model's foundational capabilities have also seen a substantial enhancement compared to AutoAudit-7B.
 
@@ -117,7 +117,7 @@ To simplify the process of automated dataset generation, we have also updated th
 
 ## Future Plans
 
-1. **Inspired by CyberPal, we plan to synthesize a high-quality cybersecurity corpus**: This dataset will include open/closed book question answering, yes/no questions, multiple-choice Q&A, and Chain of Thoughts (CoT). We aim to open-source both the dataset and the corresponding code, providing a valuable resource for the cybersecurity research community.
-2. **Responding to the current trend of Agents**, we will further integrate security tools such as Nmap, Metasploit, etc., and reference agent frameworks like MetaGPT to automate cybersecurity operations as much as possible. This will help streamline security tasks and improve operational efficiency.
+1. **Inspired by [CyberPal](https://arxiv.org/abs/2408.09304), we plan to synthesize a high-quality cybersecurity corpus**: This dataset will include open/closed book question answering, yes/no questions, multiple-choice Q&A, and Chain of Thoughts (CoT). We aim to open-source both the dataset and the corresponding code, providing a valuable resource for the cybersecurity research community.
+2. **Responding to the current trend of Agents**, we will further integrate security tools such as Nmap, Metasploit, etc., and reference agent frameworks like [MetaGPT](https://github.com/geekan/MetaGPT) to automate cybersecurity operations as much as possible. This will help streamline security tasks and improve operational efficiency.
 3. **Evaluating the security of cybersecurity-specific large models**: We plan to assess the potential security risks associated with these models, such as possible jailbreaks or backdoors. This will ensure that the models remain secure and resilient against adversarial threats in real-world applications.
 
