@@ -121,3 +121,8 @@ To simplify the process of automated dataset generation, we have also updated th
 2. **Responding to the current trend of Agents**, we will further integrate security tools such as Nmap, Metasploit, etc., and reference agent frameworks like [MetaGPT](https://github.com/geekan/MetaGPT) to automate cybersecurity operations as much as possible. This will help streamline security tasks and improve operational efficiency.
 3. **Evaluating the security of cybersecurity-specific large models**: We plan to assess the potential security risks associated with these models, such as possible jailbreaks or backdoors. This will ensure that the models remain secure and resilient against adversarial threats in real-world applications.
 
+
+
+## Acknowledge
+
+I would like to thank my friend Eric Ma; working together with him to continuously improve this project has been one of the most meaningful experiences. I also want to express my gratitude to CUHKSZ He Lab, where I have learned so much and solidified my direction for further improvements. Finally, I extend my thanks to every member of the open-source community. Thank you for your support and help. I will try my best to develop my project, I hope you can like it.
