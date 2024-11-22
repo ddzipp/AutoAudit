@@ -1,6 +1,6 @@
 # AutoAudit-Cyber Security LLM model
 
-[**🇨🇳中文**](./README.md) | [**🌐English**](./README_EN.md) | [**📖文档/Wiki**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) 
+[**🇨🇳中文**](./README_EN.md) | [**🌐English**](./README.md) | [**📖文档/Wiki**](https://github.com/ddzipp/AutoAudit/wiki) | [**❓提问/Issues**](https://github.com/ddzipp/AutoAudit/issues) | [**💬讨论/Discussions**](https://github.com/ddzipp/AutoAudit/discussions) 
 
 <div align="center">
   <a href="https://github.com/ddzipp/AutoAudit">
@@ -15,62 +15,62 @@
   </p>
 </div>
 
-# AutoAudit Series model
+# AutoAudit 系列模型
 
-- [AutoAudit-7B](), this version is a demo version trained based on [Alpaca-Lora](https://github.com/tloen/alpaca-lora). It performs admirably in the field of network security, yielding satisfactory responses in English. However, it currently lacks contextual understanding and requires a larger parameter model to address this limitation.
+- [AutoAudit-7B](https://huggingface.co/lilBuffaloEric/autoaudit_20230714_attempt2)：此版本为基于 [Alpaca-Lora](https://github.com/tloen/alpaca-lora) 训练的演示版本。在网络安全领域表现良好，能够提供令人满意的英文回复。但目前缺乏上下文理解能力，需要更大参数量的模型来弥补这一缺陷。
 
-- AutoAudit-33B, this version is still undergoing internal testing and training, and it will be released at a later date.
+- [AutoAudit-8B-Instruct](https://huggingface.co/dzip/Llama3_8B_4Cybersecurity)：此版本基于 [Llama3-8B-instruct](https://github.com/meta-llama/llama3) 微调，在回答网络安全相关问题方面的性能显著提升。相比 AutoAudit-7B，其基础能力也得到了大幅增强。
+
+- AutoAudit-Qwen：由于中文网络安全语料库的有限性，该模型仍处于探索和规划阶段。
+
+- 更多模型版本即将推出！
 
   
 
-## Brief Introduction
+## 简介
 
-ChatGPT has opened up a new direction in the development of large language models, with major internet giants entering the race. Prominent universities are also increasing their efforts in the research and application of LLMs. In the realm of general large language models, OpenAI's dominance remains unshaken. Thus, the development of large language models tailored for specific domains is an inevitable trend. While models have gradually emerged in fields like healthcare, education, finance, and law, the field of network security has been lacking in model releases.
+本项目探索了大语言模型（LLMs）在网络安全领域的应用，旨在应对这一领域的复杂性以及对强大防御机制的迫切需求。**网络安全涵盖操作系统、网络协议、恶意软件分析和威胁检测等多个领域**。随着网络威胁的复杂性和规模不断增长，LLMs 通过其先进的语言处理能力，为威胁检测、分析和响应提供了广阔的前景。LLMs 能够解释、生成和综合海量数据，为解决复杂的网络安全挑战提供了变革性工具。
 
-Coincidentally, we've discovered that Microsoft also has a similar targeted product called "Microsoft Security Copilot." Perhaps introducing large language models for natural language processing into the realm of network security, even security auditing, is a feasible path.
+与传统方法相比，LLMs 可通过微调适应不断变化的威胁环境，提供跨领域的知识连接以及可操作的应急响应能力。同时，它们可以自动化重复的分析任务，整合来自多种来源的数据，生成能够捕捉潜在威胁的风险评估，从而提高安全系统的适应性和弹性。因此，LLMs 在强化网络安全防御框架方面发挥着关键作用，为安全专家提供更强大的支持，并实现更全面、更灵活的保护。
 
-To promote the application of large language models in the field of network security, this project has open-sourced the network security grand model "AutoAudit." Specifically designed for the network security domain, AutoAudit aims to provide robust natural language processing capabilities for security auditing and network defense. It has functionalities such as analyzing malicious code, detecting network attacks, and predicting security vulnerabilities, providing strong support for security professionals.
-
-By introducing network security language models like AutoAudit, we can anticipate significant breakthroughs in the field of network security. It will become an invaluable assistant to security professionals, offering accurate and swift analysis and predictions to counter ever-evolving cyber threats.
-
-For interactive convenience and to address practical security auditing scenarios, we have coupled the AutoAudit model with ClamAV to create a security scanning platform (with the frontend inspired by Bootstrap templates). If you wish to directly download the AutoAudit model, you can visit [HuggingFace](https://huggingface.co/lilBuffaloEric/autoaudit_20230703_attempt1) to obtain the weights.
+为了提升交互便捷性并适配实际的安全审计场景，我们将 AutoAudit 模型与 ClamAV 结合，创建了一个安全扫描平台（前端设计借鉴了 Bootstrap 模板）。如果您希望直接下载 AutoAudit 模型，可以访问 HuggingFace 获取模型权重。
 
 
 
-## Model Deployment and Usage
+## 检测分析平台部署以及使用
 
-### Environment Setup
+### 环境设置
 
-1. Download the contents of this repository to your local or remote server:
+1. 将此代码库的内容下载到本地或远程服务器：
 
    ```
    git clone git@github.com:ddzipp/AutoAudit.git
    cd AutoAudit
    ```
 
-2. Create a Conda environment:
+2. 创建 Conda 环境：
 
    ```
    conda create --name AutoAudit python=3.8
    conda activate AutoAudit
    ```
 
-3. Install dependencies:
+3. 安装依赖：
 
    ```
    pip install -r requirements.txt
    ```
 
-4. Install ClamAV and add ClamAV to the environment path.
+4. 安装 ClamAV 并将其添加到环境路径中。
 
-5. Set the paths for the llama model and Lora weights in the sandbox:
+5. 在 sandbox 中设置 llama 模型和 Lora 权重的路径：
 
    ```
    sandbox/yahma/llama-7b-hf 
    sandbox/lilBuffaloEirc/autoaudit_20230703_attempt2
    ```
 
-6. Run the following command to start the project:
+6. 运行以下命令启动项目：
 
    ```
    python manage.py runserver
@@ -78,18 +78,9 @@ For interactive convenience and to address practical security auditing scenarios
 
 
 
-## Future Plans
-
-1. **Enhancing Logical Reasoning in the Security Domain with Larger Model Bases**: In the field of network security, particularly in subdomains like malicious code analysis, SQL injection, and XSS analysis, there is a substantial demand for a higher number of input tokens. The current basic model's input is around 500-700 tokens, which is clearly inadequate for our needs. We are currently considering using ChatGLM or LLaMA2 as new foundational models.
-2. **Increased Accuracy and Reliability**: In the security domain, accuracy and reliability are paramount. Due to limitations in our team's resources and certain unique challenges, we currently can only use some automated scripts in the `scripts` directory for self-instruct, resulting in limited and time-consuming data samples that might lack professionalism and rigor. Our team faces many challenges in terms of improving and expanding the dataset, which we hope to receive assistance with.
-3. **Integration with More Security Scanning Tools** and coupling them with LLM to cover as many security scenarios as possible (we are considering automated vulnerability detection and binary reverse engineering).
-4. **Exploring Integration with Langchain**, allowing the LLM model to connect with external data sources.
-
-
-
 ## Dataset
 
-We have adopted the Self-Instruct dataset organization method, which combines human annotation and self-generated data. The dataset is mainly sourced from Github, Kaggle, security websites, and publicly available security vulnerability datasets. Subsequently, it undergoes cleansing and data augmentation to construct dialogue data. The dataset is strictly organized in the Alpaca model dataset format, divided into three parts: Instruction, Input, and Output. In the output, we specify that the analysis should include detailed information (analysis), security rating (label), security risks (risk), and corresponding solutions (solution). For detailed dataset information (including format and organization), refer to [AutoAudit Training Data](https://github.com/ddzipp/AutoAudit/wiki/About-Dataset). Here are some examples:
+我们采用了 Self-Instruct 数据集组织方法，结合了人工标注和自生成数据。数据集主要来源于 Github、Kaggle、安全网站以及公开的安全漏洞数据集。随后对数据进行清洗和数据增强，以构建对话数据。数据集严格按照 Alpaca 模型数据集格式进行组织，分为三部分：Instruction、Input 和 Output。在 Output 部分，我们规定分析应包括以下详细信息：**分析（analysis）**、**安全评级（label）**、**安全风险（risk）** 以及 **对应的解决方案（solution）**。有关数据集的详细信息（包括格式和组织方式），请参考 [AutoAudit Training Data](https://github.com/ddzipp/AutoAudit/wiki/About-Dataset)。以下是一些示例：
 
 | question                                                     | answer                                                       | Subject                |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------------- |
@@ -97,23 +88,27 @@ We have adopted the Self-Instruct dataset organization method, which combines hu
 | Please analyze whether this Python code snippet poses security risks："import socket\nimport json\nimport os\nimport subprocess\nimport base64\n\nclass Backdoor:\n def **init**(self, ip, port):\n self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n self.connection.connect((ip, port))" | **1. analysis**: The Python code snippet defines a class named 'Backdoor' with an initializer method '**init**'. The class sets up a socket connection to a specified IP address and port.\n**2. label**: Low\n**3. risk**: The given Python code snippet has a low security risk. It mainly establishes a socket connection, which is a common networking operation. However, the actual security risk depends on the implementation details of the class and its usage.\n**4. solution**: Ensure that the 'Backdoor' class and its usage have appropriate security measures in place, such as proper input validation, secure communication protocols, access controls, and error handling, to mitigate potential security risks. | Python Code Analysis   |
 | What is the purpose of the Certificate Revocation List (CRL)? | The purpose of the Certificate Revocation List (CRL) is to list the digital certificates revoked by the issuing certificate authority (CA) before their scheduled expiration date, indicating that they should no longer be trusted. | Security Knowledge Q&A |
 
-The current composition of the training dataset is as follows:
+数据集组成以及对应比例如图所示：
 
 ![dataset composition](https://github.com/ddzipp/AutoAudit/blob/main/images/dataset%20composition.png)
 
-To simplify the process of automated dataset generation, we have also updated the [GPT](https://chatgpt.com/g/g-c9tvJtq1z-cybersecurity-dataset-for-llama) in the GPT Store dedicated to generating cybersecurity QA datasets, and the generation results are as follows:
+为了简化自动化数据集生成的流程，我们还在 GPT Store 中更新了专用于生成网络安全问答数据集的 [GPTs](https://chatgpt.com/g/g-c9tvJtq1z-cybersecurity-dataset-for-llama)，其示例如下：
 
 ![GPT Store](https://github.com/ddzipp/AutoAudit/blob/main/images/GPT%20store.png)
 
-## System Schema
 
-![result1](https://github.com/ddzipp/AutoAudit/blob/main/images/result1.png)
 
-![result2](https://github.com/ddzipp/AutoAudit/blob/main/images/result2.png)
+## 未来计划
 
-![result3](https://github.com/ddzipp/AutoAudit/blob/main/images/result3.png)
+1. **受 [CyberPal](https://arxiv.org/abs/2408.09304) 的启发，我们计划合成一个高质量的网络安全语料库**：该数据集将包括开放/封闭式问答、是非题、多选问答以及链式推理（CoT）。我们计划开源数据集及其相关代码，为网络安全研究社区提供宝贵的资源。
+2. **响应当前 Agent 的发展趋势**，我们将进一步集成 Nmap、Metasploit 等安全工具，并参考 [MetaGPT](https://github.com/geekan/MetaGPT) 等 Agent 框架，尽可能实现网络安全操作的自动化。这将有助于简化安全任务并提高操作效率。
+3. **评估面向网络安全的大模型的安全性**：我们计划分析这些模型可能存在的安全风险，例如潜在的越狱或后门攻击。这将确保模型在真实应用场景中具有安全性和抵抗性。
 
-![result4](https://github.com/ddzipp/AutoAudit/blob/main/images/result4.png)
+
+
+## 致谢
+
+我要感谢我的朋友 [Eric Ma](https://github.com/lilBuffaloEric)；与他一起不断改进这个项目是我经历过的最有意义的体验之一。同时，我也要感谢 CUHKSZ He Lab，在这里我学到了很多，并确定了进一步改进的方向。最后，我要感谢每一位开源社区的成员。感谢你们的支持和帮助！
 
 
 
